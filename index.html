@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<!-- Объявление типа документа HTML5 для корректного отображения в браузере -->
+<html lang="ru">
+  <!-- Указываем язык страницы для поисковых систем и скрин-ридеров -->
+  <head>
+    <!-- Секция метаданных страницы -->
+    <meta charset="UTF-8" />
+    <!-- Кодировка UTF-8 для поддержки всех символов включая кириллицу -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Настройка viewport для корректного отображения на мобильных устройствах -->
+    <title>Варвара Нещеретова</title>
+    <!-- Заголовок страницы, отображается во вкладке браузера -->
+
+    <!-- Подключение внешнего CSS файла со всеми стилями -->
+    <link rel="stylesheet" href="styles.css" />
+    <!-- Подключение внешнего JavaScript файла с функциональностью -->
+    <script src="script.js" defer></script>
+  </head>
+
+  <body>
+    <!-- Фиксированный заголовок сайта -->
+    <header class="header">
+      <!-- Имя автора/владельца сайта -->
+      <div class="name">Варвара Нещеретова</div>
+
+      <!-- Основная навигация для десктопа -->
+      <nav class="nav">
+        <a href="#" class="nav-link">Лента</a>
+        <a href="#" class="nav-link">Гардероб</a>
+        <a href="#" class="nav-link">Контакты</a>
+      </nav>
+
+      <!-- Кнопка бургер-меню для мобильных устройств -->
+      <div class="burger" id="burger">
+        <span class="burger-line"></span>
+        <span class="burger-line"></span>
+        <span class="burger-line"></span>
+      </div>
+    </header>
+
+    <!-- Мобильное меню (скрыто по умолчанию) -->
+    <div class="mobile-menu" id="mobileMenu">
+      <a href="#" class="mobile-link">Лента</a>
+      <a href="#" class="mobile-link">Гардероб</a>
+      <a href="#" class="mobile-link">Контакты</a>
+    </div>
+
+    <!-- Главное окно с фоновыми фотографиями -->
+    <main class="main-window">
+      <!-- Контейнер для фоновых фотографий -->
+      <div class="background-photos">
+        <!-- Первая фоновая фотография -->
+        <div
+          class="bg-photo bg-photo-1"
+          style="background-image: url('IMG_5689.JPG')"
+        >
+          <button class="photo-button">Текст тут</button>
+        </div>
+        <!-- Вторая фоновая фотография -->
+        <div
+          class="bg-photo bg-photo-2"
+          style="background-image: url('IMG_5690.JPG')"
+        >
+          <button class="photo-button">Текст тут</button>
+        </div>
+        <!-- Третья фоновая фотография -->
+        <div
+          class="bg-photo bg-photo-3"
+          style="background-image: url('IMG_5691.JPG')"
+        >
+          <button class="photo-button">Текст тут</button>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>
