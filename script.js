@@ -68,13 +68,13 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  // Функциональность бесконечной карусели для мобильных устройств
+  // Функциональность полноэкранной галереи для мобильных устройств
   function initMobileCarousel() {
     const mainWindow = document.querySelector(".main-window");
     const photos = document.querySelectorAll(".bg-photo");
     const backgroundPhotos = document.querySelector(".background-photos");
-    let currentPhoto = 0;
     let isTransitioning = false;
+    let currentPhoto = 0;
     let updateIndicators;
 
     // Проверяем, что элементы найдены
@@ -83,13 +83,9 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
 
-    console.log(
-      "Инициализация бесконечной карусели:",
-      photos.length,
-      "фотографий"
-    );
+    console.log("Инициализация галереи:", photos.length, "фотографий");
 
-    // Функция для перехода к фотографии (бесконечная карусель)
+    // Функция для перехода к фотографии через трансформацию
     function goToPhoto(photoIndex) {
       if (isTransitioning) return;
 
@@ -99,44 +95,44 @@ document.addEventListener("DOMContentLoaded", function () {
       isTransitioning = true;
       currentPhoto = clampedIndex;
 
-      // Вычисляем смещение для вертикальной карусели
-      const translateY = -clampedIndex * 100; // -100% для каждой фотографии
+      // Вычисляем смещение для горизонтальной карусели
+      const translateX = -clampedIndex * 100; // -100% для каждой фотографии
 
       console.log(
         "Переход к фотографии:",
         clampedIndex,
         "Смещение:",
-        translateY + "%"
+        translateX + "%"
       );
 
       // Применяем трансформацию
-      backgroundPhotos.style.transform = `translateY(${translateY}%)`;
+      backgroundPhotos.style.transform = `translateX(${translateX}%)`;
 
       // Обновляем индикаторы
       if (updateIndicators) {
         updateIndicators();
       }
 
-      // Сбрасываем флаг после завершения анимации
       setTimeout(() => {
         isTransitioning = false;
       }, 500);
     }
 
-    // Функция для следующей фотографии (бесконечная)
+    // Функция для следующей фотографии
     function nextPhoto() {
-      const nextIndex = (currentPhoto + 1) % photos.length;
-      goToPhoto(nextIndex);
+      if (currentPhoto < photos.length - 1) {
+        goToPhoto(currentPhoto + 1);
+      }
     }
 
-    // Функция для предыдущей фотографии (бесконечная)
+    // Функция для предыдущей фотографии
     function prevPhoto() {
-      const prevIndex =
-        currentPhoto === 0 ? photos.length - 1 : currentPhoto - 1;
-      goToPhoto(prevIndex);
+      if (currentPhoto > 0) {
+        goToPhoto(currentPhoto - 1);
+      }
     }
 
-    // Обработчики свайпов для карусели
+    // Обработчики свайпов для галереи
     let startX = 0;
     let startY = 0;
     let startTime = 0;
@@ -167,23 +163,23 @@ document.addEventListener("DOMContentLoaded", function () {
       const maxSwipeTime = 500;
 
       // Проверяем, что свайп достаточно сильный и быстрый
-      if (Math.abs(deltaY) > minSwipeDistance && deltaTime < maxSwipeTime) {
-        // Вертикальные свайпы - основной способ навигации
-        if (isSwipeUp) {
-          // Свайп вверх - следующая фотография
+      if (Math.abs(deltaX) > minSwipeDistance && deltaTime < maxSwipeTime) {
+        // Горизонтальные свайпы - основной способ навигации
+        if (isSwipeLeft) {
+          // Свайп влево - следующая фотография
           nextPhoto();
-        } else if (isSwipeDown) {
-          // Свайп вниз - предыдущая фотография
+        } else if (isSwipeRight) {
+          // Свайп вправо - предыдущая фотография
           prevPhoto();
         }
       } else if (
-        Math.abs(deltaX) > minSwipeDistance &&
+        Math.abs(deltaY) > minSwipeDistance &&
         deltaTime < maxSwipeTime
       ) {
-        // Горизонтальные свайпы тоже работают
-        if (isSwipeLeft) {
+        // Вертикальные свайпы тоже работают
+        if (isSwipeUp) {
           nextPhoto();
-        } else if (isSwipeRight) {
+        } else if (isSwipeDown) {
           prevPhoto();
         }
       }
@@ -192,20 +188,12 @@ document.addEventListener("DOMContentLoaded", function () {
     // Обработчик клавиш для навигации
     document.addEventListener("keydown", function (e) {
       if (window.innerWidth <= 770) {
-        if (e.key === "ArrowDown") {
+        if (e.key === "ArrowRight" || e.key === "ArrowDown") {
           e.preventDefault();
           nextPhoto();
-        } else if (e.key === "ArrowUp") {
+        } else if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
           e.preventDefault();
           prevPhoto();
-        } else if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
-          // Горизонтальные стрелки тоже работают
-          e.preventDefault();
-          if (e.key === "ArrowRight") {
-            nextPhoto();
-          } else {
-            prevPhoto();
-          }
         }
       }
     });

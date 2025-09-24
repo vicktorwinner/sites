@@ -146,19 +146,23 @@ body {
   overflow: hidden; /* Скрываем переполнение */
 }
 
-/* На мобильных устройствах - вертикальная карусель без прокрутки */
+/* На мобильных устройствах - полноэкранная галерея */
 @media (max-width: 770px) {
   .main-window {
-    overflow: hidden; /* Убираем прокрутку */
+    overflow: hidden; /* Скрываем прокрутку - переключение через JavaScript */
     height: 100vh; /* Высота экрана */
     position: relative; /* Для позиционирования фотографий */
   }
 
   /* Контейнер для фотографий на мобильных */
   .background-photos {
-    height: 300vh; /* Высота для 3 фотографий */
-    flex-direction: column; /* Вертикальное расположение для карусели */
-    width: 100vw; /* Ширина экрана */
+    position: absolute; /* Абсолютное позиционирование */
+    top: 0;
+    left: 0;
+    width: 100vw; /* Полная ширина экрана */
+    height: 100vh; /* Полная высота экрана */
+    display: flex; /* Flexbox для расположения */
+    flex-direction: row; /* Горизонтальное расположение для переключения */
     transition: transform 0.5s ease; /* Плавный переход между фотографиями */
   }
 
@@ -167,6 +171,9 @@ body {
     width: 100vw !important; /* Полная ширина экрана */
     height: 100vh !important; /* Полная высота экрана */
     flex: none !important; /* Отключаем flex для точного контроля размеров */
+    background-size: cover; /* Покрываем весь экран */
+    background-position: center; /* Центрируем изображение */
+    background-repeat: no-repeat; /* Не повторяем изображение */
   }
 }
 
