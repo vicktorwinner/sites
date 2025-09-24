@@ -98,9 +98,12 @@ document.addEventListener("DOMContentLoaded", function () {
         targetScroll
       );
 
-      mainWindow.scrollTo({
-        top: targetScroll,
-        behavior: "smooth",
+      // Используем requestAnimationFrame для более плавной анимации
+      requestAnimationFrame(() => {
+        mainWindow.scrollTo({
+          top: targetScroll,
+          behavior: "smooth",
+        });
       });
 
       // Обновляем текущую фотографию сразу
@@ -109,7 +112,7 @@ document.addEventListener("DOMContentLoaded", function () {
       // Увеличиваем время ожидания для завершения scroll-snap анимации
       setTimeout(() => {
         isScrolling = false;
-      }, 300); //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      }, 400); // Оптимизированное время для плавности
     }
 
     // Обработчик прокрутки - работает независимо от скорости и дальности
@@ -159,7 +162,7 @@ document.addEventListener("DOMContentLoaded", function () {
         ) {
           currentPhoto = newPhoto;
         }
-      }, 50); // !!!!!!!!!!!!!!!Увеличили задержку для предотвращения конфликтов с scroll-snap
+      }, 80); // Оптимизированная задержка для плавности
     });
 
     // Обработчики касаний для свайпов - улучшенная версия
@@ -182,9 +185,9 @@ document.addEventListener("DOMContentLoaded", function () {
       const deltaY = startY - endY;
       const deltaTime = endTime - startTime;
 
-      // Более чувствительные настройки для свайпов
-      const minSwipeDistance = 30; // Уменьшили минимальное расстояние
-      const maxSwipeTime = 500; // Увеличили максимальное время
+      // Оптимизированные настройки для свайпов
+      const minSwipeDistance = 25; // Еще более чувствительные свайпы
+      const maxSwipeTime = 400; // Оптимизированное время
 
       if (
         Math.abs(deltaY) > minSwipeDistance &&
@@ -203,10 +206,10 @@ document.addEventListener("DOMContentLoaded", function () {
           scrollToPhoto(currentPhoto);
         }
 
-        // Сбрасываем флаг через небольшую задержку
+        // Сбрасываем флаг через оптимизированную задержку
         setTimeout(() => {
           isSwipeScrolling = false;
-        }, 300);
+        }, 250);
       }
     });
 
@@ -245,7 +248,7 @@ document.addEventListener("DOMContentLoaded", function () {
             currentPhoto--;
             scrollToPhoto(currentPhoto);
           }
-        }, 50); // Небольшая задержка для предотвращения множественных срабатываний
+        }, 30); // Оптимизированная задержка для плавности
       }
     });
   }

@@ -154,6 +154,7 @@ body {
     scroll-behavior: smooth; /* Плавная прокрутка */
     -webkit-overflow-scrolling: touch; /* Плавная прокрутка на iOS */
     scroll-snap-type: y mandatory; /* Привязка к элементам при прокрутке */
+    scroll-padding-top: 0; /* Убираем отступы для точного позиционирования */
   }
 
   /* Контейнер для фотографий на мобильных */
@@ -170,6 +171,8 @@ body {
     flex: none !important; /* Отключаем flex для точного контроля размеров */
     scroll-snap-align: start; /* Привязка к началу каждой фотографии */
     scroll-snap-stop: always; /* Остановка на каждой фотографии */
+    transition: transform 0.3s ease-out, opacity 0.3s ease-out; /* Плавные переходы */
+    will-change: transform; /* Оптимизация для GPU */
   }
 }
 
