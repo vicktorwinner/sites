@@ -146,15 +146,13 @@ body {
   overflow: hidden; /* Скрываем переполнение */
 }
 
-/* На мобильных устройствах разрешаем прокрутку */
+/* На мобильных устройствах разрешаем обычную прокрутку */
 @media (max-width: 770px) {
   .main-window {
     overflow-y: auto; /* Разрешаем вертикальную прокрутку на мобильных */
     height: 100vh; /* Высота экрана */
     scroll-behavior: smooth; /* Плавная прокрутка */
     -webkit-overflow-scrolling: touch; /* Плавная прокрутка на iOS */
-    scroll-snap-type: y mandatory; /* Привязка к элементам при прокрутке */
-    scroll-padding-top: 0; /* Убираем отступы для точного позиционирования */
   }
 
   /* Контейнер для фотографий на мобильных */
@@ -169,10 +167,6 @@ body {
     width: 100vw !important; /* Полная ширина экрана - принудительно */
     height: 100vh !important; /* Полная высота экрана - принудительно */
     flex: none !important; /* Отключаем flex для точного контроля размеров */
-    scroll-snap-align: start; /* Привязка к началу каждой фотографии */
-    scroll-snap-stop: always; /* Остановка на каждой фотографии */
-    transition: transform 0.3s ease-out, opacity 0.3s ease-out; /* Плавные переходы */
-    will-change: transform; /* Оптимизация для GPU */
   }
 }
 
