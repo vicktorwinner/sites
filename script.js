@@ -138,8 +138,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
           // Если прокрутка находится в пределах фотографии (с меньшим запасом для точности)
           if (
-            scrollTop >= photoStart - photoHeight * 0.4 &&
-            scrollTop < photoEnd - photoHeight * 0.4
+            scrollTop >= photoStart - photoHeight * 0.5 &&
+            scrollTop < photoEnd - photoHeight * 0.5
           ) {
             newPhoto = i;
             break;
