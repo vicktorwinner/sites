@@ -99,18 +99,18 @@ document.addEventListener("DOMContentLoaded", function () {
       isTransitioning = true;
       currentPhoto = clampedIndex;
 
-      // Вычисляем смещение для карусели
-      const translateX = -clampedIndex * 100; // -100% для каждой фотографии
+      // Вычисляем смещение для вертикальной карусели
+      const translateY = -clampedIndex * 100; // -100% для каждой фотографии
 
       console.log(
         "Переход к фотографии:",
         clampedIndex,
         "Смещение:",
-        translateX + "%"
+        translateY + "%"
       );
 
       // Применяем трансформацию
-      backgroundPhotos.style.transform = `translateX(${translateX}%)`;
+      backgroundPhotos.style.transform = `translateY(${translateY}%)`;
 
       // Обновляем индикаторы
       if (updateIndicators) {
@@ -167,22 +167,23 @@ document.addEventListener("DOMContentLoaded", function () {
       const maxSwipeTime = 500;
 
       // Проверяем, что свайп достаточно сильный и быстрый
-      if (Math.abs(deltaX) > minSwipeDistance && deltaTime < maxSwipeTime) {
-        if (isSwipeLeft) {
-          // Свайп влево - следующая фотография
+      if (Math.abs(deltaY) > minSwipeDistance && deltaTime < maxSwipeTime) {
+        // Вертикальные свайпы - основной способ навигации
+        if (isSwipeUp) {
+          // Свайп вверх - следующая фотография
           nextPhoto();
-        } else if (isSwipeRight) {
-          // Свайп вправо - предыдущая фотография
+        } else if (isSwipeDown) {
+          // Свайп вниз - предыдущая фотография
           prevPhoto();
         }
       } else if (
-        Math.abs(deltaY) > minSwipeDistance &&
+        Math.abs(deltaX) > minSwipeDistance &&
         deltaTime < maxSwipeTime
       ) {
-        // Вертикальные свайпы тоже работают
-        if (isSwipeUp) {
+        // Горизонтальные свайпы тоже работают
+        if (isSwipeLeft) {
           nextPhoto();
-        } else if (isSwipeDown) {
+        } else if (isSwipeRight) {
           prevPhoto();
         }
       }
@@ -191,12 +192,20 @@ document.addEventListener("DOMContentLoaded", function () {
     // Обработчик клавиш для навигации
     document.addEventListener("keydown", function (e) {
       if (window.innerWidth <= 770) {
-        if (e.key === "ArrowRight" || e.key === "ArrowDown") {
+        if (e.key === "ArrowDown") {
           e.preventDefault();
           nextPhoto();
-        } else if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
+        } else if (e.key === "ArrowUp") {
           e.preventDefault();
           prevPhoto();
+        } else if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
+          // Горизонтальные стрелки тоже работают
+          e.preventDefault();
+          if (e.key === "ArrowRight") {
+            nextPhoto();
+          } else {
+            prevPhoto();
+          }
         }
       }
     });
