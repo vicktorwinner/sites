@@ -112,6 +112,17 @@ document.addEventListener("DOMContentLoaded", function () {
       $navPanel.addClass("invisible");
       scrolling = true;
 
+      // Анимация появления текста на текущей странице
+      const currentTextOverlay = $(
+        ".bg-photo:nth-child(" + currentPage + ") .text-overlay"
+      );
+      currentTextOverlay.removeClass("fade-in-text");
+
+      // Небольшая задержка для плавного появления
+      setTimeout(function () {
+        currentTextOverlay.addClass("fade-in-text");
+      }, 200);
+
       setTimeout(function () {
         $navPanel.removeClass("invisible");
         scrolling = false;
@@ -205,12 +216,13 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
 
-    // Обработчики для кнопок на фотографиях
+    // Обработчики для кнопок на фотографиях - убираем alert
     $(".photo-button").each(function (index) {
       $(this)
         .off("click")
         .on("click", function () {
-          alert(`Кнопка на фотографии ${index + 1} нажата!`);
+          // Кнопка нажата, но без alert
+          console.log(`Кнопка на фотографии ${index + 1} нажата!`);
         });
     });
 
