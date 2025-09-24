@@ -146,34 +146,30 @@ body {
   overflow: hidden; /* Скрываем переполнение */
 }
 
-/* На мобильных устройствах - полноэкранная галерея */
+/* На мобильных устройствах разрешаем прокрутку */
 @media (max-width: 770px) {
   .main-window {
-    overflow: hidden; /* Скрываем прокрутку - переключение через JavaScript */
+    overflow-y: auto; /* Разрешаем вертикальную прокрутку на мобильных */
     height: 100vh; /* Высота экрана */
-    position: relative; /* Для позиционирования фотографий */
+    scroll-behavior: smooth; /* Плавная прокрутка */
+    -webkit-overflow-scrolling: touch; /* Плавная прокрутка на iOS */
+    scroll-snap-type: y mandatory; /* Привязка к элементам при прокрутке */
   }
 
   /* Контейнер для фотографий на мобильных */
   .background-photos {
-    position: absolute; /* Абсолютное позиционирование */
-    top: 0;
-    left: 0;
+    height: 300vh; /* Общая высота равна 3 экранам */
+    flex-direction: column !important; /* Вертикальное расположение - принудительно */
     width: 100vw; /* Полная ширина экрана */
-    height: 100vh; /* Полная высота экрана */
-    display: flex; /* Flexbox для расположения */
-    flex-direction: row; /* Горизонтальное расположение для переключения */
-    transition: transform 0.5s ease; /* Плавный переход между фотографиями */
   }
 
   /* Стили для фотографий на мобильных */
   .bg-photo {
-    width: 100vw !important; /* Полная ширина экрана */
-    height: 100vh !important; /* Полная высота экрана */
+    width: 100vw !important; /* Полная ширина экрана - принудительно */
+    height: 100vh !important; /* Полная высота экрана - принудительно */
     flex: none !important; /* Отключаем flex для точного контроля размеров */
-    background-size: cover; /* Покрываем весь экран */
-    background-position: center; /* Центрируем изображение */
-    background-repeat: no-repeat; /* Не повторяем изображение */
+    scroll-snap-align: start; /* Привязка к началу каждой фотографии */
+    scroll-snap-stop: always; /* Остановка на каждой фотографии */
   }
 }
 

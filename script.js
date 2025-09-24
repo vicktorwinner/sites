@@ -68,133 +68,191 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  // Функциональность полноэкранной галереи для мобильных устройств
+  // Функциональность вертикальной карусели для мобильных устройств
   function initMobileCarousel() {
     const mainWindow = document.querySelector(".main-window");
     const photos = document.querySelectorAll(".bg-photo");
-    const backgroundPhotos = document.querySelector(".background-photos");
-    let isTransitioning = false;
+    let isScrolling = false;
     let currentPhoto = 0;
+    const photoHeight = window.innerHeight;
     let updateIndicators;
 
     // Проверяем, что элементы найдены
-    if (!mainWindow || photos.length === 0 || !backgroundPhotos) {
+    if (!mainWindow || photos.length === 0) {
       console.warn("Элементы карусели не найдены");
       return;
     }
 
-    console.log("Инициализация галереи:", photos.length, "фотографий");
+    console.log("Инициализация карусели:", photos.length, "фотографий");
 
-    // Функция для перехода к фотографии через трансформацию
-    function goToPhoto(photoIndex) {
-      if (isTransitioning) return;
+    // Функция для плавного перехода к фотографии с поддержкой scroll-snap
+    function scrollToPhoto(photoIndex) {
+      if (isScrolling) return;
 
-      // Ограничиваем индекс фотографии
-      const clampedIndex = Math.max(0, Math.min(photoIndex, photos.length - 1));
-
-      isTransitioning = true;
-      currentPhoto = clampedIndex;
-
-      // Вычисляем смещение для горизонтальной карусели
-      const translateX = -clampedIndex * 100; // -100% для каждой фотографии
+      isScrolling = true;
+      const targetScroll = photoIndex * photoHeight;
 
       console.log(
         "Переход к фотографии:",
-        clampedIndex,
-        "Смещение:",
-        translateX + "%"
+        photoIndex,
+        "Позиция:",
+        targetScroll
       );
 
-      // Применяем трансформацию
-      backgroundPhotos.style.transform = `translateX(${translateX}%)`;
+      mainWindow.scrollTo({
+        top: targetScroll,
+        behavior: "smooth",
+      });
 
-      // Обновляем индикаторы
+      // Обновляем текущую фотографию сразу
+      currentPhoto = photoIndex;
       if (updateIndicators) {
         updateIndicators();
       }
 
+      // Увеличиваем время ожидания для завершения scroll-snap анимации
       setTimeout(() => {
-        isTransitioning = false;
-      }, 500);
+        isScrolling = false;
+      }, 1000);
     }
 
-    // Функция для следующей фотографии
-    function nextPhoto() {
-      if (currentPhoto < photos.length - 1) {
-        goToPhoto(currentPhoto + 1);
-      }
-    }
+    // Обработчик прокрутки - работает независимо от скорости и дальности
+    let scrollTimeout;
+    mainWindow.addEventListener("scroll", function () {
+      // Не обрабатываем прокрутку во время программной анимации
+      if (isScrolling) return;
 
-    // Функция для предыдущей фотографии
-    function prevPhoto() {
-      if (currentPhoto > 0) {
-        goToPhoto(currentPhoto - 1);
-      }
-    }
+      clearTimeout(scrollTimeout);
 
-    // Обработчики свайпов для галереи
-    let startX = 0;
+      scrollTimeout = setTimeout(() => {
+        const scrollTop = mainWindow.scrollTop;
+
+        // Определяем текущую фотографию на основе позиции прокрутки
+        // Используем более точную логику для определения ближайшей фотографии
+        let newPhoto = 0;
+
+        // Проверяем, к какой фотографии ближе всего текущая позиция прокрутки
+        for (let i = 0; i < photos.length; i++) {
+          const photoStart = i * photoHeight;
+          const photoEnd = (i + 1) * photoHeight;
+
+          // Если прокрутка находится в пределах фотографии (с меньшим запасом для точности)
+          if (
+            scrollTop >= photoStart - photoHeight * 0.4 &&
+            scrollTop < photoEnd - photoHeight * 0.4
+          ) {
+            newPhoto = i;
+            break;
+          }
+        }
+
+        console.log(
+          "Прокрутка:",
+          scrollTop,
+          "Новая фотография:",
+          newPhoto,
+          "Текущая:",
+          currentPhoto
+        );
+
+        // Обновляем текущую фотографию, если она изменилась
+        if (
+          newPhoto !== currentPhoto &&
+          newPhoto >= 0 &&
+          newPhoto < photos.length
+        ) {
+          currentPhoto = newPhoto;
+          if (updateIndicators) {
+            updateIndicators();
+          }
+        }
+      }, 150); // Увеличили задержку для предотвращения конфликтов с scroll-snap
+    });
+
+    // Обработчики касаний для свайпов - улучшенная версия
     let startY = 0;
     let startTime = 0;
+    let isSwipeScrolling = false;
 
     mainWindow.addEventListener("touchstart", function (e) {
-      startX = e.touches[0].clientX;
+      // Не обрабатываем касания во время программной прокрутки
+      if (isScrolling) return;
+
       startY = e.touches[0].clientY;
       startTime = Date.now();
+      isSwipeScrolling = false;
     });
 
     mainWindow.addEventListener("touchend", function (e) {
-      const endX = e.changedTouches[0].clientX;
       const endY = e.changedTouches[0].clientY;
       const endTime = Date.now();
-
-      const deltaX = startX - endX;
       const deltaY = startY - endY;
       const deltaTime = endTime - startTime;
 
-      // Определяем направление свайпа
-      const isSwipeLeft = deltaX > 0;
-      const isSwipeRight = deltaX < 0;
-      const isSwipeUp = deltaY > 0;
-      const isSwipeDown = deltaY < 0;
+      // Более чувствительные настройки для свайпов
+      const minSwipeDistance = 30; // Уменьшили минимальное расстояние
+      const maxSwipeTime = 500; // Увеличили максимальное время
 
-      // Минимальная дистанция для свайпа
-      const minSwipeDistance = 50;
-      const maxSwipeTime = 500;
-
-      // Проверяем, что свайп достаточно сильный и быстрый
-      if (Math.abs(deltaX) > minSwipeDistance && deltaTime < maxSwipeTime) {
-        // Горизонтальные свайпы - основной способ навигации
-        if (isSwipeLeft) {
-          // Свайп влево - следующая фотография
-          nextPhoto();
-        } else if (isSwipeRight) {
-          // Свайп вправо - предыдущая фотография
-          prevPhoto();
-        }
-      } else if (
+      if (
         Math.abs(deltaY) > minSwipeDistance &&
-        deltaTime < maxSwipeTime
+        deltaTime < maxSwipeTime &&
+        !isSwipeScrolling
       ) {
-        // Вертикальные свайпы тоже работают
-        if (isSwipeUp) {
-          nextPhoto();
-        } else if (isSwipeDown) {
-          prevPhoto();
+        isSwipeScrolling = true;
+
+        if (deltaY > 0 && currentPhoto < photos.length - 1) {
+          // Свайп вверх - следующая фотография
+          currentPhoto++;
+          scrollToPhoto(currentPhoto);
+        } else if (deltaY < 0 && currentPhoto > 0) {
+          // Свайп вниз - предыдущая фотография
+          currentPhoto--;
+          scrollToPhoto(currentPhoto);
         }
+
+        // Сбрасываем флаг через небольшую задержку
+        setTimeout(() => {
+          isSwipeScrolling = false;
+        }, 300);
       }
     });
 
     // Обработчик клавиш для навигации
     document.addEventListener("keydown", function (e) {
       if (window.innerWidth <= 770) {
-        if (e.key === "ArrowRight" || e.key === "ArrowDown") {
+        if (e.key === "ArrowDown" && currentPhoto < photos.length - 1) {
           e.preventDefault();
-          nextPhoto();
-        } else if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
+          currentPhoto++;
+          scrollToPhoto(currentPhoto);
+        } else if (e.key === "ArrowUp" && currentPhoto > 0) {
           e.preventDefault();
-          prevPhoto();
+          currentPhoto--;
+          scrollToPhoto(currentPhoto);
         }
+      }
+    });
+
+    // Обработчик колеса мыши для более плавной навигации
+    let wheelTimeout;
+    mainWindow.addEventListener("wheel", function (e) {
+      if (window.innerWidth <= 770) {
+        // Не обрабатываем колесо мыши во время программной прокрутки
+        if (isScrolling) return;
+
+        e.preventDefault();
+
+        clearTimeout(wheelTimeout);
+        wheelTimeout = setTimeout(() => {
+          if (e.deltaY > 0 && currentPhoto < photos.length - 1) {
+            // Прокрутка вниз - следующая фотография
+            currentPhoto++;
+            scrollToPhoto(currentPhoto);
+          } else if (e.deltaY < 0 && currentPhoto > 0) {
+            // Прокрутка вверх - предыдущая фотография
+            currentPhoto--;
+            scrollToPhoto(currentPhoto);
+          }
+        }, 50); // Небольшая задержка для предотвращения множественных срабатываний
       }
     });
 
@@ -240,7 +298,8 @@ document.addEventListener("DOMContentLoaded", function () {
         `;
 
         indicator.addEventListener("click", () => {
-          goToPhoto(index);
+          currentPhoto = index;
+          scrollToPhoto(currentPhoto);
         });
 
         indicatorsContainer.appendChild(indicator);
