@@ -146,20 +146,23 @@ body {
   overflow: hidden; /* Скрываем переполнение */
 }
 
-/* На мобильных устройствах разрешаем обычную прокрутку */
+/* На мобильных устройствах используем систему страниц */
 @media (max-width: 770px) {
   .main-window {
-    overflow-y: auto; /* Разрешаем вертикальную прокрутку на мобильных */
+    overflow: hidden; /* Скрываем прокрутку для мобильных */
     height: 100vh; /* Высота экрана */
-    scroll-behavior: smooth; /* Плавная прокрутка */
-    -webkit-overflow-scrolling: touch; /* Плавная прокрутка на iOS */
+    position: relative; /* Относительное позиционирование */
   }
 
   /* Контейнер для фотографий на мобильных */
   .background-photos {
-    height: 300vh; /* Общая высота равна 3 экранам */
+    height: 300vh; /* Общая высота для 3 страниц */
     flex-direction: column !important; /* Вертикальное расположение - принудительно */
     width: 100vw; /* Полная ширина экрана */
+    position: absolute; /* Абсолютное позиционирование */
+    top: 0;
+    left: 0;
+    transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1); /* Плавные переходы */
   }
 
   /* Стили для фотографий на мобильных */
@@ -167,7 +170,101 @@ body {
     width: 100vw !important; /* Полная ширина экрана - принудительно */
     height: 100vh !important; /* Полная высота экрана - принудительно */
     flex: none !important; /* Отключаем flex для точного контроля размеров */
+    position: relative; /* Относительное позиционирование */
   }
+
+  /* Классы для активных страниц */
+  .background-photos.active-page1 {
+    transform: translateY(0%);
+  }
+
+  .background-photos.active-page2 {
+    transform: translateY(-33.333%);
+  }
+
+  .background-photos.active-page3 {
+    transform: translateY(-66.666%);
+  }
+
+  /* Мобильная навигация */
+  .mobile-nav {
+    position: fixed;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+
+  /* Кнопки прокрутки */
+  .scroll-btn {
+    width: 40px;
+    height: 40px;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+
+  .scroll-btn:hover {
+    background: rgba(0, 0, 0, 0.8);
+    transform: scale(1.1);
+  }
+
+  .scroll-btn:active {
+    transform: scale(0.95);
+  }
+
+  /* Навигационная панель */
+  .nav-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    transition: opacity 0.3s ease;
+  }
+
+  .nav-panel.invisible {
+    opacity: 0;
+  }
+
+  /* Навигационные кнопки */
+  .nav-btn {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+  }
+
+  .nav-btn:hover {
+    background: rgba(255, 255, 255, 0.8);
+    transform: scale(1.2);
+  }
+
+  .nav-btn.active {
+    background: rgba(255, 255, 255, 1);
+    border-color: rgba(255, 255, 255, 0.8);
+    transform: scale(1.3);
+  }
+}
+
+/* Скрываем мобильную навигацию на десктопе */
+.mobile-nav {
+  display: none;
 }
 
 /* Контейнер для фоновых фотографий */
@@ -216,7 +313,7 @@ body {
 /* Стили для кнопки на фотографии */
 .photo-button {
   position: absolute; /* Абсолютное позиционирование */
-  bottom: 90px; /* Отступ снизу 90px */
+  bottom: 20px; /* Отступ снизу уменьшен на 50px (было 70px) */
   left: 90px; /* Отступ слева 90px */
   right: 90px; /* Отступ справа 90px */
   background: rgba(0, 0, 0, 0.2); /* Полупрозрачный черный фон */
@@ -273,7 +370,7 @@ body {
 
   /* Адаптивные стили для кнопок на мобильных */
   .photo-button {
-    bottom: 200px; /* Уменьшенный отступ снизу на мобильных */
+    bottom: 50px; /* Уменьшенный отступ снизу на мобильных (было 100px) */
     left: 40px; /* Уменьшенный отступ слева на мобильных */
     right: 40px; /* Уменьшенный отступ справа на мобильных */
     font-size: 18px; /* Увеличенный размер шрифта на мобильных */
@@ -304,7 +401,7 @@ body {
 
   /* Адаптивные стили для кнопок на маленьких экранах */
   .photo-button {
-    bottom: 180px; /* Уменьшенный отступ снизу */
+    bottom: 130px; /* Уменьшенный отступ снизу (было 180px) */
     left: 30px; /* Уменьшенный отступ слева */
     right: 30px; /* Уменьшенный отступ справа */
     font-size: 16px; /* Увеличенный размер шрифта */
@@ -322,7 +419,7 @@ body {
 
   /* Адаптивные стили для кнопок на очень маленьких экранах */
   .photo-button {
-    bottom: 150px; /* Минимальный отступ снизу */
+    bottom: 100px; /* Минимальный отступ снизу (было 150px) */
     left: 20px; /* Минимальный отступ слева */
     right: 20px; /* Минимальный отступ справа */
     font-size: 14px; /* Размер шрифта для очень маленьких экранов */

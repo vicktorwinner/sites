@@ -67,4 +67,145 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   });
+
+  // Инициализация системы страниц для мобильных устройств
+  function initMobilePageSystem() {
+    // Проверяем, что мы на мобильном устройстве
+    if (window.innerWidth > 770) {
+      return;
+    }
+
+    // Удаляем все старые обработчики событий
+    $(document).off("mousewheel DOMMouseScroll");
+    $(document).off("click", ".scroll-btn");
+    $(document).off("click", ".nav-btn");
+    $(document).off("touchstart");
+    $(document).off("touchend");
+
+    const $wrap = $(".background-photos");
+    const pages = $(".page").length;
+    let scrolling = false;
+    let currentPage = 1;
+    const $navPanel = $(".nav-panel");
+    const $navBtn = $(".nav-btn");
+
+    // Функция обновления состояния (обновляет кэш при каждой прокрутке)
+    function updateState() {
+      // Убираем все классы active-page
+      $wrap.removeClass(function (index, css) {
+        return (css.match(/(^|\s)active-page\S+/g) || []).join(" ");
+      });
+
+      // Добавляем нужный класс
+      $wrap.addClass("active-page" + currentPage);
+
+      // Обновляем навигационные кнопки
+      $navBtn.removeClass("active");
+      $(".nav-btn.nav-page" + currentPage).addClass("active");
+
+      // Скрываем панель на время анимации
+      $navPanel.addClass("invisible");
+      scrolling = true;
+
+      setTimeout(function () {
+        $navPanel.removeClass("invisible");
+        scrolling = false;
+      }, 1000);
+    }
+
+    function navigateUp() {
+      if (currentPage > 1 && !scrolling) {
+        currentPage--;
+        updateState();
+      }
+    }
+
+    function navigateDown() {
+      if (currentPage < pages && !scrolling) {
+        currentPage++;
+        updateState();
+      }
+    }
+
+    // Обработчик колеса мыши - исправляем двойное прокручивание
+    $(document).on("mousewheel DOMMouseScroll", function (e) {
+      // Предотвращаем стандартное поведение только на мобильных устройствах
+      if (window.innerWidth <= 770) {
+        e.preventDefault();
+        if (!scrolling) {
+          if (e.originalEvent.wheelDelta > 0 || e.originalEvent.detail < 0) {
+            navigateUp();
+          } else {
+            navigateDown();
+          }
+        }
+      }
+    });
+
+    // Обработчики кнопок навигации
+    $(document).on("click", ".scroll-btn", function () {
+      if ($(this).hasClass("up")) {
+        navigateUp();
+      } else {
+        navigateDown();
+      }
+    });
+
+    // Обработчики точек навигации
+    $(document).on("click", ".nav-btn:not(.active)", function () {
+      if (!scrolling) {
+        var target = parseInt($(this).attr("data-target"));
+        currentPage = target;
+        updateState();
+      }
+    });
+
+    // Обработчики свайпов
+    let startY = 0;
+    let startTime = 0;
+
+    $(document).on("touchstart", function (e) {
+      if (!scrolling) {
+        startY = e.originalEvent.touches[0].clientY;
+        startTime = Date.now();
+      }
+    });
+
+    $(document).on("touchend", function (e) {
+      if (!scrolling) {
+        const endY = e.originalEvent.changedTouches[0].clientY;
+        const endTime = Date.now();
+        const deltaY = startY - endY;
+        const deltaTime = endTime - startTime;
+
+        if (Math.abs(deltaY) > 50 && deltaTime < 500) {
+          if (deltaY > 0) {
+            navigateDown();
+          } else {
+            navigateUp();
+          }
+        }
+      }
+    });
+
+    // Обработчики для кнопок на фотографиях
+    $(".photo-button").each(function (index) {
+      $(this)
+        .off("click")
+        .on("click", function () {
+          alert(`Кнопка на фотографии ${index + 1} нажата!`);
+        });
+    });
+
+    // Инициализируем первую страницу
+    updateState();
+  }
+
+  // Инициализируем систему страниц для мобильных
+  initMobilePageSystem();
+
+  // Переинициализируем при изменении размера окна
+  $(window).on("resize", function () {
+    initMobilePageSystem();
+  });
 });

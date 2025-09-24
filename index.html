@@ -13,6 +13,8 @@
 
     <!-- Подключение внешнего CSS файла со всеми стилями -->
     <link rel="stylesheet" href="styles.css" />
+    <!-- Подключение jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- Подключение внешнего JavaScript файла с функциональностью -->
     <script src="script.js" defer></script>
   </head>
@@ -51,24 +53,38 @@
       <div class="background-photos">
         <!-- Первая фоновая фотография -->
         <div
-          class="bg-photo bg-photo-1"
+          class="bg-photo bg-photo-1 page"
           style="background-image: url('IMG_5689.JPG')"
         >
           <button class="photo-button">Текст тут</button>
         </div>
         <!-- Вторая фоновая фотография -->
         <div
-          class="bg-photo bg-photo-2"
+          class="bg-photo bg-photo-2 page"
           style="background-image: url('IMG_5690.JPG')"
         >
           <button class="photo-button">Текст тут</button>
         </div>
         <!-- Третья фоновая фотография -->
         <div
-          class="bg-photo bg-photo-3"
+          class="bg-photo bg-photo-3 page"
           style="background-image: url('IMG_5691.JPG')"
         >
           <button class="photo-button">Текст тут</button>
+        </div>
+      </div>
+
+      <!-- Мобильная навигация (только для мобильных устройств) -->
+      <div class="mobile-nav">
+        <!-- Кнопки прокрутки вверх/вниз -->
+        <div class="scroll-btn up">↑</div>
+        <div class="scroll-btn down">↓</div>
+
+        <!-- Навигационная панель с точками -->
+        <div class="nav-panel">
+          <div class="nav-btn nav-page1 active" data-target="1"></div>
+          <div class="nav-btn nav-page2" data-target="2"></div>
+          <div class="nav-btn nav-page3" data-target="3"></div>
         </div>
       </div>
     </main>
