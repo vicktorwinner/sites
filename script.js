@@ -132,204 +132,174 @@ document.addEventListener("DOMContentLoaded", function () {
       }, dynamicDelay);
     }
 
-    // Улучшенный обработчик прокрутки с более точной логикой
+    // Простая и эффективная логика скролла (адаптированная из example.js)
     let scrollTimeout;
     let lastScrollTime = 0;
+    const scrollSensitivity = 30; // Чувствительность к прокрутке
+    const scrollLockDuration = 600; // Время блокировки повторных событий
 
     mainWindow.addEventListener("scroll", function () {
       // Не обрабатываем прокрутку во время программной анимации
       if (isScrolling) return;
 
       const currentTime = Date.now();
+
+      // Throttling - ограничиваем частоту обработки событий
+      if (currentTime - lastScrollTime < 50) return;
       lastScrollTime = currentTime;
 
       clearTimeout(scrollTimeout);
 
       scrollTimeout = setTimeout(() => {
-        // Проверяем, что прошло достаточно времени с последнего скролла
-        if (Date.now() - lastScrollTime < 50) return;
-
         const scrollTop = mainWindow.scrollTop;
 
-        // Улучшенная логика определения текущей фотографии
-        // Используем более точные пороги для лучшего определения
-        let newPhoto = 0;
-        let minDistance = Infinity;
+        // Простая логика определения текущей фотографии
+        const newPhoto = Math.round(scrollTop / photoHeight);
 
-        // Находим фотографию с минимальным расстоянием до текущей позиции
-        for (let i = 0; i < photos.length; i++) {
-          const photoCenter = i * photoHeight + photoHeight / 2;
-          const distance = Math.abs(scrollTop - photoCenter);
-
-          if (distance < minDistance) {
-            minDistance = distance;
-            newPhoto = i;
-          }
-        }
-
-        // Дополнительная проверка: если мы близко к границе фотографии
-        const currentPhotoCenter = currentPhoto * photoHeight + photoHeight / 2;
-        const distanceToCurrent = Math.abs(scrollTop - currentPhotoCenter);
-
-        // Если мы достаточно далеко от центра текущей фотографии, переключаемся
-        if (distanceToCurrent > photoHeight * 0.3) {
-          // Определяем направление прокрутки
-          if (
-            scrollTop > currentPhotoCenter &&
-            currentPhoto < photos.length - 1
-          ) {
-            newPhoto = currentPhoto + 1;
-          } else if (scrollTop < currentPhotoCenter && currentPhoto > 0) {
-            newPhoto = currentPhoto - 1;
-          }
-        }
+        // Ограничиваем индекс в допустимых пределах
+        const clampedPhoto = Math.max(0, Math.min(newPhoto, photos.length - 1));
 
         console.log(
           "Прокрутка:",
           scrollTop,
           "Новая фотография:",
-          newPhoto,
+          clampedPhoto,
           "Текущая:",
-          currentPhoto,
-          "Расстояние:",
-          minDistance
-        );
-
-        // Обновляем текущую фотографию, если она изменилась
-        if (
-          newPhoto !== currentPhoto &&
-          newPhoto >= 0 &&
-          newPhoto < photos.length
-        ) {
-          currentPhoto = newPhoto;
-        }
-      }, 100); // Увеличена задержка для более стабильной работы
-    });
-
-    // Улучшенные обработчики касаний для свайпов с более точной логикой
-    let startY = 0;
-    let startTime = 0;
-    let isSwipeScrolling = false;
-    let touchStartScrollTop = 0;
-
-    mainWindow.addEventListener("touchstart", function (e) {
-      // Не обрабатываем касания во время программной прокрутки
-      if (isScrolling) return;
-
-      startY = e.touches[0].clientY;
-      startTime = Date.now();
-      touchStartScrollTop = mainWindow.scrollTop;
-      isSwipeScrolling = false;
-    });
-
-    mainWindow.addEventListener("touchend", function (e) {
-      const endY = e.changedTouches[0].clientY;
-      const endTime = Date.now();
-      const deltaY = startY - endY;
-      const deltaTime = endTime - startTime;
-      const scrollDelta = mainWindow.scrollTop - touchStartScrollTop;
-
-      // Улучшенные настройки для свайпов с учетом скорости и направления
-      const minSwipeDistance = 30; // Минимальное расстояние для свайпа
-      const maxSwipeTime = 500; // Максимальное время для свайпа
-      const minSwipeVelocity = 0.3; // Минимальная скорость свайпа (пикселей/мс)
-
-      // Рассчитываем скорость свайпа
-      const swipeVelocity = Math.abs(deltaY) / deltaTime;
-
-      // Проверяем условия для свайпа
-      const isValidSwipe =
-        Math.abs(deltaY) > minSwipeDistance &&
-        deltaTime < maxSwipeTime &&
-        swipeVelocity > minSwipeVelocity &&
-        !isSwipeScrolling;
-
-      if (isValidSwipe) {
-        isSwipeScrolling = true;
-
-        // Определяем направление свайпа с учетом текущей позиции
-        const isSwipeUp = deltaY > 0;
-        const isSwipeDown = deltaY < 0;
-
-        console.log(
-          "Свайп:",
-          "Направление:",
-          isSwipeUp ? "вверх" : "вниз",
-          "Расстояние:",
-          deltaY,
-          "Скорость:",
-          swipeVelocity,
-          "Текущая фотография:",
           currentPhoto
         );
 
-        if (isSwipeUp && currentPhoto < photos.length - 1) {
+        // Обновляем текущую фотографию, если она изменилась
+        if (clampedPhoto !== currentPhoto) {
+          currentPhoto = clampedPhoto;
+        }
+      }, 100);
+    });
+
+    // Упрощенные обработчики свайпов (адаптированные из example.js)
+    let startY = 0;
+    let isSwipeScrolling = false;
+    const swipeSensitivity = 50; // Чувствительность к свайпам
+    const swipeLockDuration = 600; // Время блокировки повторных свайпов
+
+    mainWindow.addEventListener("touchstart", function (e) {
+      // Не обрабатываем касания во время программной прокрутки
+      if (isScrolling || isSwipeScrolling) return;
+
+      startY = e.touches[0].clientY;
+    });
+
+    mainWindow.addEventListener("touchend", function (e) {
+      if (isScrolling || isSwipeScrolling) return;
+
+      const endY = e.changedTouches[0].clientY;
+      const deltaY = startY - endY;
+
+      // Простая проверка свайпа (аналогично example.js)
+      if (Math.abs(deltaY) > swipeSensitivity) {
+        isSwipeScrolling = true;
+
+        if (deltaY > 0 && currentPhoto < photos.length - 1) {
           // Свайп вверх - следующая фотография
           currentPhoto++;
           scrollToPhoto(currentPhoto);
-        } else if (isSwipeDown && currentPhoto > 0) {
+        } else if (deltaY < 0 && currentPhoto > 0) {
           // Свайп вниз - предыдущая фотография
           currentPhoto--;
           scrollToPhoto(currentPhoto);
         }
 
-        // Сбрасываем флаг через оптимизированную задержку
+        // Блокируем повторные свайпы
         setTimeout(() => {
           isSwipeScrolling = false;
-        }, 300);
+        }, swipeLockDuration);
       }
     });
 
-    // Обработчик клавиш для навигации
+    // Обработчик клавиш для навигации (адаптированный из example.js)
+    let keyTicking = false;
+    const keyLockDuration = 600; // Время блокировки повторных нажатий
+
     document.addEventListener("keydown", function (e) {
       if (window.innerWidth <= 770) {
+        // Не обрабатываем клавиши во время программной прокрутки или блокировки
+        if (isScrolling || keyTicking) return;
+
         if (e.key === "ArrowDown" && currentPhoto < photos.length - 1) {
           e.preventDefault();
+          keyTicking = true;
           currentPhoto++;
           scrollToPhoto(currentPhoto);
+
+          // Блокируем повторные нажатия
+          setTimeout(() => {
+            keyTicking = false;
+          }, keyLockDuration);
         } else if (e.key === "ArrowUp" && currentPhoto > 0) {
           e.preventDefault();
+          keyTicking = true;
           currentPhoto--;
           scrollToPhoto(currentPhoto);
+
+          // Блокируем повторные нажатия
+          setTimeout(() => {
+            keyTicking = false;
+          }, keyLockDuration);
         }
       }
     });
 
-    // Улучшенный обработчик колеса мыши с накоплением прокрутки
-    let wheelTimeout;
-    let wheelAccumulator = 0;
-    const wheelThreshold = 50; // Порог для срабатывания прокрутки
+    // Обработчик колеса мыши (адаптированный из example.js)
+    let wheelTicking = false;
+    const wheelSensitivity = 30; // Чувствительность к прокрутке колеса
+    const wheelLockDuration = 600; // Время блокировки повторных событий
 
-    mainWindow.addEventListener("wheel", function (e) {
+    // Функция для определения направления прокрутки (как в example.js)
+    function handleWheelScroll(evt) {
       if (window.innerWidth <= 770) {
         // Не обрабатываем колесо мыши во время программной прокрутки
-        if (isScrolling) return;
+        if (isScrolling || wheelTicking) return;
 
-        e.preventDefault();
+        evt.preventDefault();
 
-        // Накопляем значение прокрутки для более точного определения
-        wheelAccumulator += e.deltaY;
+        // Определяем delta для разных браузеров (как в example.js)
+        let delta;
+        if (evt.deltaY !== undefined) {
+          delta = -evt.deltaY;
+        } else if (evt.wheelDelta !== undefined) {
+          delta = evt.wheelDelta;
+        } else {
+          delta = evt.detail * -120;
+        }
 
-        clearTimeout(wheelTimeout);
-        wheelTimeout = setTimeout(() => {
-          // Проверяем, превышен ли порог для смены фотографии
-          if (Math.abs(wheelAccumulator) > wheelThreshold) {
-            if (wheelAccumulator > 0 && currentPhoto < photos.length - 1) {
-              // Прокрутка вниз - следующая фотография
-              currentPhoto++;
-              scrollToPhoto(currentPhoto);
-            } else if (wheelAccumulator < 0 && currentPhoto > 0) {
-              // Прокрутка вверх - предыдущая фотография
-              currentPhoto--;
-              scrollToPhoto(currentPhoto);
-            }
-
-            // Сбрасываем накопитель после смены фотографии
-            wheelAccumulator = 0;
+        // Проверяем направление и чувствительность
+        if (delta <= -wheelSensitivity) {
+          // Прокрутка вниз - следующая фотография
+          wheelTicking = true;
+          if (currentPhoto < photos.length - 1) {
+            currentPhoto++;
+            scrollToPhoto(currentPhoto);
           }
-        }, 50); // Увеличена задержка для более стабильной работы
+          // Блокируем повторные события
+          setTimeout(() => {
+            wheelTicking = false;
+          }, wheelLockDuration);
+        } else if (delta >= wheelSensitivity) {
+          // Прокрутка вверх - предыдущая фотография
+          wheelTicking = true;
+          if (currentPhoto > 0) {
+            currentPhoto--;
+            scrollToPhoto(currentPhoto);
+          }
+          // Блокируем повторные события
+          setTimeout(() => {
+            wheelTicking = false;
+          }, wheelLockDuration);
+        }
       }
-    });
+    }
+
+    // Добавляем обработчик с throttling (как в example.js)
+    mainWindow.addEventListener("wheel", handleWheelScroll, { passive: false });
   }
 
   // Инициализируем карусель
