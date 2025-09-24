@@ -75,12 +75,17 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
 
-    // Удаляем все старые обработчики событий
-    $(document).off("mousewheel DOMMouseScroll");
+    // Удаляем все старые обработчики событий для предотвращения дублирования
+    $(document).off("mousewheel DOMMouseScroll wheel");
     $(document).off("click", ".scroll-btn");
     $(document).off("click", ".nav-btn");
     $(document).off("touchstart");
     $(document).off("touchend");
+    $(document).off("touchmove");
+
+    // Блокируем стандартную прокрутку на мобильных
+    document.body.style.overflow = "hidden";
+    document.documentElement.style.overflow = "hidden";
 
     const $wrap = $(".background-photos");
     const pages = $(".page").length;
@@ -128,12 +133,13 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Обработчик колеса мыши - исправляем двойное прокручивание
-    $(document).on("mousewheel DOMMouseScroll", function (e) {
+    $(document).on("wheel", function (e) {
       // Предотвращаем стандартное поведение только на мобильных устройствах
       if (window.innerWidth <= 770) {
         e.preventDefault();
+        e.stopPropagation();
         if (!scrolling) {
-          if (e.originalEvent.wheelDelta > 0 || e.originalEvent.detail < 0) {
+          if (e.originalEvent.deltaY < 0) {
             navigateUp();
           } else {
             navigateDown();
@@ -160,31 +166,42 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
 
-    // Обработчики свайпов
+    // Обработчики свайпов для мобильных устройств
     let startY = 0;
     let startTime = 0;
+    let isScrolling = false;
 
     $(document).on("touchstart", function (e) {
-      if (!scrolling) {
+      if (!scrolling && !isScrolling) {
         startY = e.originalEvent.touches[0].clientY;
         startTime = Date.now();
+        isScrolling = true;
+      }
+    });
+
+    $(document).on("touchmove", function (e) {
+      // Предотвращаем стандартную прокрутку на мобильных
+      if (window.innerWidth <= 770) {
+        e.preventDefault();
+        e.stopPropagation();
       }
     });
 
     $(document).on("touchend", function (e) {
-      if (!scrolling) {
+      if (!scrolling && isScrolling) {
         const endY = e.originalEvent.changedTouches[0].clientY;
         const endTime = Date.now();
         const deltaY = startY - endY;
         const deltaTime = endTime - startTime;
 
-        if (Math.abs(deltaY) > 50 && deltaTime < 500) {
+        if (Math.abs(deltaY) > 30 && deltaTime < 300) {
           if (deltaY > 0) {
             navigateDown();
           } else {
             navigateUp();
           }
         }
+        isScrolling = false;
       }
     });
 
@@ -206,6 +223,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Переинициализируем при изменении размера окна
   $(window).on("resize", function () {
+    // Восстанавливаем стандартную прокрутку для десктопа
+    if (window.innerWidth > 770) {
+      document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
+    }
     initMobilePageSystem();
   });
 });
