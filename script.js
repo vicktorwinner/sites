@@ -75,7 +75,6 @@ document.addEventListener("DOMContentLoaded", function () {
     let isScrolling = false;
     let currentPhoto = 0;
     const photoHeight = window.innerHeight;
-    let updateIndicators;
 
     // Проверяем, что элементы найдены
     if (!mainWindow || photos.length === 0) {
@@ -106,9 +105,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Обновляем текущую фотографию сразу
       currentPhoto = photoIndex;
-      if (updateIndicators) {
-        updateIndicators();
-      }
 
       // Увеличиваем время ожидания для завершения scroll-snap анимации
       setTimeout(() => {
@@ -162,9 +158,6 @@ document.addEventListener("DOMContentLoaded", function () {
           newPhoto < photos.length
         ) {
           currentPhoto = newPhoto;
-          if (updateIndicators) {
-            updateIndicators();
-          }
         }
       }, 50); // !!!!!!!!!!!!!!!Увеличили задержку для предотвращения конфликтов с scroll-snap
     });
@@ -253,77 +246,6 @@ document.addEventListener("DOMContentLoaded", function () {
             scrollToPhoto(currentPhoto);
           }
         }, 50); // Небольшая задержка для предотвращения множественных срабатываний
-      }
-    });
-
-    // Функция обновления индикаторов
-    updateIndicators = function () {
-      const indicators = document.querySelectorAll(".indicator");
-      indicators.forEach((indicator, index) => {
-        if (index === currentPhoto) {
-          indicator.style.background = "rgba(255, 255, 255, 0.9)";
-          indicator.style.transform = "scale(1.2)";
-        } else {
-          indicator.style.background = "rgba(255, 255, 255, 0.3)";
-          indicator.style.transform = "scale(1)";
-        }
-      });
-    };
-
-    // Создание индикаторов
-    function createPhotoIndicators() {
-      const indicatorsContainer = document.createElement("div");
-      indicatorsContainer.className = "photo-indicators";
-      indicatorsContainer.style.cssText = `
-        position: fixed;
-        right: 20px;
-        top: 50%;
-        transform: translateY(-50%);
-        z-index: 1000;
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-      `;
-
-      photos.forEach((_, index) => {
-        const indicator = document.createElement("div");
-        indicator.className = "indicator";
-        indicator.style.cssText = `
-          width: 8px;
-          height: 8px;
-          border-radius: 50%;
-          background: rgba(255, 255, 255, 0.3);
-          cursor: pointer;
-          transition: all 0.3s ease;
-        `;
-
-        indicator.addEventListener("click", () => {
-          currentPhoto = index;
-          scrollToPhoto(currentPhoto);
-        });
-
-        indicatorsContainer.appendChild(indicator);
-      });
-
-      document.body.appendChild(indicatorsContainer);
-    }
-
-    // Создаем индикаторы только на мобильных
-    if (window.innerWidth <= 770) {
-      createPhotoIndicators();
-    }
-
-    // Обработчик изменения размера окна
-    window.addEventListener("resize", function () {
-      if (window.innerWidth > 770) {
-        const indicators = document.querySelector(".photo-indicators");
-        if (indicators) {
-          indicators.remove();
-        }
-      } else {
-        if (!document.querySelector(".photo-indicators")) {
-          createPhotoIndicators();
-        }
       }
     });
   }
