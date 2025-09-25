@@ -1,10 +1,21 @@
+/* ================================================ */
+/* JAVASCRIPT ДЛЯ САЙТА ВАРВАРЫ НЕЩЕРЕТОВОЙ */
+/* ================================================ */
 /*
   JavaScript для сайта Варвары Нещеретовой
   Функциональность мобильной карусели и навигации
 */
 
+// ================================================
+// ИНИЦИАЛИЗАЦИЯ И ОСНОВНЫЕ ОБРАБОТЧИКИ
+// ================================================
+
 // Ждем полной загрузки DOM перед выполнением скриптов
 document.addEventListener("DOMContentLoaded", function () {
+  // ================================================
+  // МОБИЛЬНОЕ МЕНЮ И НАВИГАЦИЯ
+  // ================================================
+
   // Получаем ссылки на элементы DOM
   const burger = document.getElementById("burger");
   const mobileMenu = document.getElementById("mobileMenu");
@@ -54,6 +65,10 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
+  // ================================================
+  // ПЛАВНАЯ ПРОКРУТКА
+  // ================================================
+
   // Плавная прокрутка для навигационных ссылок
   document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
     anchor.addEventListener("click", function (e) {
@@ -67,6 +82,10 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   });
+
+  // ================================================
+  // СИСТЕМА СТРАНИЦ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ
+  // ================================================
 
   // Инициализация системы страниц для мобильных устройств
   function initMobilePageSystem() {
@@ -94,6 +113,10 @@ document.addEventListener("DOMContentLoaded", function () {
     const $navPanel = $(".nav-panel");
     const $navBtn = $(".nav-btn");
 
+    // ================================================
+    // ФУНКЦИИ УПРАВЛЕНИЯ СОСТОЯНИЕМ
+    // ================================================
+
     // Функция обновления состояния (обновляет кэш при каждой прокрутке)
     function updateState() {
       // Убираем все классы active-page
@@ -113,15 +136,24 @@ document.addEventListener("DOMContentLoaded", function () {
       scrolling = true;
 
       // Анимация появления текста на текущей странице
-      const currentTextOverlay = $(
-        ".bg-photo:nth-child(" + currentPage + ") .text-overlay"
+      const currentMobileText = $(
+        ".bg-photo:nth-child(" + currentPage + ") .mobile-text-overlay"
       );
-      currentTextOverlay.removeClass("fade-in-text");
+
+      // Убираем анимацию с предыдущих текстов
+      $(".mobile-text-overlay").removeClass("fade-in-text");
 
       // Небольшая задержка для плавного появления
       setTimeout(function () {
-        currentTextOverlay.addClass("fade-in-text");
-      }, 200);
+        // Показываем только соответствующий текст в зависимости от размера экрана
+        if (window.innerWidth > 770) {
+          // На десктопе показываем десктопный текст (он всегда один и в центре)
+          $(".desktop-text-overlay").addClass("fade-in-text");
+        } else {
+          // На мобильных показываем только мобильный текст
+          currentMobileText.addClass("fade-in-text");
+        }
+      }, 100); // Ускорили анимацию
 
       setTimeout(function () {
         $navPanel.removeClass("invisible");
@@ -142,6 +174,10 @@ document.addEventListener("DOMContentLoaded", function () {
         updateState();
       }
     }
+
+    // ================================================
+    // ОБРАБОТЧИКИ СОБЫТИЙ ПРОКРУТКИ
+    // ================================================
 
     // Обработчик колеса мыши - исправляем двойное прокручивание
     $(document).on("wheel", function (e) {
@@ -176,6 +212,10 @@ document.addEventListener("DOMContentLoaded", function () {
         updateState();
       }
     });
+
+    // ================================================
+    // ОБРАБОТЧИКИ TOUCH СОБЫТИЙ (СВАЙПЫ)
+    // ================================================
 
     // Обработчики свайпов для мобильных устройств
     let startY = 0;
@@ -216,6 +256,10 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
 
+    // ================================================
+    // ОБРАБОТЧИКИ ИНТЕРАКТИВНЫХ ЭЛЕМЕНТОВ
+    // ================================================
+
     // Обработчики для кнопок на фотографиях - убираем alert
     $(".photo-button").each(function (index) {
       $(this)
@@ -228,10 +272,28 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Инициализируем первую страницу
     updateState();
+
+    // Принудительно показываем десктопный текст на первой странице при загрузке
+    if (window.innerWidth > 770) {
+      setTimeout(function () {
+        $(".desktop-text-overlay").addClass("fade-in-text");
+      }, 200); // Ускорили появление
+    }
   }
+
+  // ================================================
+  // ИНИЦИАЛИЗАЦИЯ И ОБРАБОТКА ИЗМЕНЕНИЙ РАЗМЕРА
+  // ================================================
 
   // Инициализируем систему страниц для мобильных
   initMobilePageSystem();
+
+  // Принудительно показываем десктопный текст при загрузке страницы
+  if (window.innerWidth > 770) {
+    setTimeout(function () {
+      $(".desktop-text-overlay").addClass("fade-in-text");
+    }, 300); // Ускорили появление
+  }
 
   // Переинициализируем при изменении размера окна
   $(window).on("resize", function () {
@@ -239,6 +301,10 @@ document.addEventListener("DOMContentLoaded", function () {
     if (window.innerWidth > 770) {
       document.body.style.overflow = "";
       document.documentElement.style.overflow = "";
+      // Убираем все анимации текстов при переходе на десктоп
+      $(".desktop-text-overlay, .mobile-text-overlay").removeClass(
+        "fade-in-text"
+      );
     }
     initMobilePageSystem();
   });
