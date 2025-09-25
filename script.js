@@ -119,6 +119,19 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Функция обновления состояния (обновляет кэш при каждой прокрутке)
     function updateState() {
+      // Раннее скрытие footer при переходе с третьей страницы с анимацией
+      if (currentPage !== 3 && $(".footer").hasClass("show-on-mobile")) {
+        // Добавляем класс для анимации исчезновения
+        $(".footer").addClass("fade-out");
+        console.log("Footer: начинается анимация исчезновения");
+
+        // Убираем класс после завершения анимации
+        setTimeout(function () {
+          $(".footer").removeClass("show-on-mobile fade-out");
+          console.log("Footer: скрыт после анимации");
+        }, 300); // Быстрая анимация 300ms
+      }
+
       // Убираем все классы active-page
       $wrap.removeClass(function (index, css) {
         return (css.match(/(^|\s)active-page\S+/g) || []).join(" ");
@@ -126,6 +139,19 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Добавляем нужный класс
       $wrap.addClass("active-page" + currentPage);
+
+      // Гарантируем видимость header на мобильных
+      if (window.innerWidth <= 770) {
+        $(".header").css({
+          display: "flex",
+          position: "fixed",
+          top: "0",
+          left: "0",
+          "z-index": "1000",
+          opacity: "1",
+          visibility: "visible",
+        });
+      }
 
       // Обновляем навигационные кнопки
       $navBtn.removeClass("active");
@@ -135,13 +161,19 @@ document.addEventListener("DOMContentLoaded", function () {
       $navPanel.addClass("invisible");
       scrolling = true;
 
-      // Анимация появления текста на текущей странице
+      // Анимация появления текста и кнопки на текущей странице
       const currentMobileText = $(
         ".bg-photo:nth-child(" + currentPage + ") .mobile-text-overlay"
       );
+      const currentMobileButton = $(
+        ".bg-photo:nth-child(" + currentPage + ") .photo-button"
+      );
 
-      // Убираем анимацию с предыдущих текстов
+      // Убираем анимацию с предыдущих текстов и кнопок
       $(".mobile-text-overlay").removeClass("fade-in-text");
+      $(".photo-button").removeClass(
+        "fade-in-button button-from-left button-from-right"
+      );
 
       // Небольшая задержка для плавного появления
       setTimeout(function () {
@@ -150,10 +182,41 @@ document.addEventListener("DOMContentLoaded", function () {
           // На десктопе показываем десктопный текст (он всегда один и в центре)
           $(".desktop-text-overlay").addClass("fade-in-text");
         } else {
-          // На мобильных показываем только мобильный текст
+          // На мобильных показываем только мобильный текст и кнопку
           currentMobileText.addClass("fade-in-text");
+
+          // Определяем направление кнопки в зависимости от позиции текста
+          if (currentMobileText.hasClass("mobile-text-left")) {
+            // Если текст слева, кнопка выезжает справа
+            currentMobileButton.addClass("button-from-right");
+            console.log("Кнопка: выезжает справа (текст слева)");
+          } else if (currentMobileText.hasClass("mobile-text-right")) {
+            // Если текст справа, кнопка выезжает слева
+            currentMobileButton.addClass("button-from-left");
+            console.log("Кнопка: выезжает слева (текст справа)");
+          }
+
+          currentMobileButton.addClass("fade-in-button");
+          console.log("Кнопка: добавлен класс fade-in-button");
+
+          // Показываем footer только на третьей странице с задержкой
+          if (currentPage === 3) {
+            setTimeout(function () {
+              $(".footer").addClass("show-on-mobile");
+              console.log("Footer: показан на третьей странице с задержкой");
+            }, 800); // Задержка появления footer
+          } else {
+            // Скрываем footer с анимацией при переходе с третьей страницы
+            if ($(".footer").hasClass("show-on-mobile")) {
+              $(".footer").addClass("fade-out");
+              setTimeout(function () {
+                $(".footer").removeClass("show-on-mobile fade-out");
+                console.log("Footer: скрыт с анимацией");
+              }, 300);
+            }
+          }
         }
-      }, 100); // Ускорили анимацию
+      }, 600); // Задержка для завершения анимации прокрутки
 
       setTimeout(function () {
         $navPanel.removeClass("invisible");
@@ -260,15 +323,81 @@ document.addEventListener("DOMContentLoaded", function () {
     // ОБРАБОТЧИКИ ИНТЕРАКТИВНЫХ ЭЛЕМЕНТОВ
     // ================================================
 
-    // Обработчики для кнопок на фотографиях - убираем alert
+    // Обработчики для кнопок на фотографиях
     $(".photo-button").each(function (index) {
       $(this)
         .off("click")
         .on("click", function () {
-          // Кнопка нажата, но без alert
           console.log(`Кнопка на фотографии ${index + 1} нажата!`);
         });
     });
+
+    // ================================================
+    // FOOTER ФУНКЦИОНАЛЬНОСТЬ
+    // ================================================
+
+    // Обработчик для ссылки в footer
+    $(".footer-link").on("click", function (e) {
+      e.preventDefault(); // Предотвращаем стандартное поведение ссылки
+
+      // Анимация нажатия
+      $(this).addClass("active");
+      setTimeout(() => {
+        $(this).removeClass("active");
+      }, 150);
+
+      // Здесь можно добавить функциональность (например, открытие модального окна, переход на страницу контактов и т.д.)
+      console.log("Footer ссылка нажата!");
+
+      // Пример: показать уведомление
+      showNotification("Спасибо за интерес! Скоро свяжемся с вами.");
+    });
+
+    // Функция для показа уведомления
+    function showNotification(message) {
+      // Создаем элемент уведомления
+      const notification = $(`
+      <div class="notification">
+        <p>${message}</p>
+      </div>
+    `);
+
+      // Добавляем стили для уведомления
+      notification.css({
+        position: "fixed",
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+        background: "rgba(0, 0, 0, 0.8)",
+        color: "white",
+        padding: "20px 30px",
+        borderRadius: "10px",
+        zIndex: "10000",
+        fontSize: "16px",
+        textAlign: "center",
+        backdropFilter: "blur(10px)",
+        border: "1px solid rgba(255, 255, 255, 0.2)",
+        boxShadow: "0 8px 32px rgba(0, 0, 0, 0.3)",
+        opacity: "0",
+        transition: "all 0.3s ease",
+      });
+
+      // Добавляем уведомление на страницу
+      $("body").append(notification);
+
+      // Анимация появления
+      setTimeout(() => {
+        notification.css("opacity", "1");
+      }, 10);
+
+      // Автоматическое скрытие через 3 секунды
+      setTimeout(() => {
+        notification.css("opacity", "0");
+        setTimeout(() => {
+          notification.remove();
+        }, 300);
+      }, 3000);
+    }
 
     // Инициализируем первую страницу
     updateState();
@@ -277,7 +406,23 @@ document.addEventListener("DOMContentLoaded", function () {
     if (window.innerWidth > 770) {
       setTimeout(function () {
         $(".desktop-text-overlay").addClass("fade-in-text");
-      }, 200); // Ускорили появление
+      }, 200);
+    } else {
+      // На мобильных принудительно показываем кнопку на первой странице
+      setTimeout(function () {
+        const firstButton = $(".bg-photo:nth-child(1) .photo-button");
+        const firstText = $(".bg-photo:nth-child(1) .mobile-text-overlay");
+
+        if (firstText.hasClass("mobile-text-left")) {
+          firstButton.addClass("button-from-right");
+        } else if (firstText.hasClass("mobile-text-right")) {
+          firstButton.addClass("button-from-left");
+        }
+        firstButton.addClass("fade-in-button");
+
+        // Скрываем footer на первой странице
+        $(".footer").removeClass("show-on-mobile");
+      }, 800);
     }
   }
 
@@ -292,8 +437,40 @@ document.addEventListener("DOMContentLoaded", function () {
   if (window.innerWidth > 770) {
     setTimeout(function () {
       $(".desktop-text-overlay").addClass("fade-in-text");
-    }, 300); // Ускорили появление
+    }, 800);
   }
+
+  // ================================================
+  // ГАРАНТИЯ ВИДИМОСТИ HEADER НА МОБИЛЬНЫХ
+  // ================================================
+
+  // Функция для принудительного показа header
+  function ensureHeaderVisible() {
+    if (window.innerWidth <= 770) {
+      $(".header").css({
+        display: "flex",
+        position: "fixed",
+        top: "0",
+        left: "0",
+        "z-index": "1000",
+        opacity: "1",
+        visibility: "visible",
+      });
+    }
+  }
+
+  // Проверяем видимость header при загрузке
+  ensureHeaderVisible();
+
+  // Проверяем видимость header при изменении размера окна
+  $(window).on("resize", function () {
+    ensureHeaderVisible();
+  });
+
+  // Проверяем видимость header при прокрутке (на всякий случай)
+  $(window).on("scroll", function () {
+    ensureHeaderVisible();
+  });
 
   // Переинициализируем при изменении размера окна
   $(window).on("resize", function () {
@@ -301,11 +478,25 @@ document.addEventListener("DOMContentLoaded", function () {
     if (window.innerWidth > 770) {
       document.body.style.overflow = "";
       document.documentElement.style.overflow = "";
-      // Убираем все анимации текстов при переходе на десктоп
-      $(".desktop-text-overlay, .mobile-text-overlay").removeClass(
-        "fade-in-text"
+      // Убираем только мобильные анимации при переходе на десктоп
+      $(".mobile-text-overlay").removeClass("fade-in-text");
+      $(".photo-button").removeClass(
+        "fade-in-button button-from-left button-from-right"
       );
+      $(".footer").removeClass("show-on-mobile"); // Скрываем мобильный footer
+      // Сохраняем десктопный текст и показываем его, если он был скрыт
+      if (!$(".desktop-text-overlay").hasClass("fade-in-text")) {
+        $(".desktop-text-overlay").addClass("fade-in-text");
+      }
     }
     initMobilePageSystem();
+
+    // Дополнительная проверка для сохранения десктопного текста при изменении масштаба
+    setTimeout(function () {
+      if (window.innerWidth > 770) {
+        // Принудительно показываем десктопный текст после изменения размера
+        $(".desktop-text-overlay").addClass("fade-in-text");
+      }
+    }, 100);
   });
 });
