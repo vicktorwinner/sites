@@ -119,18 +119,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Функция обновления состояния (обновляет кэш при каждой прокрутке)
     function updateState() {
-      // Раннее скрытие footer при переходе с третьей страницы с анимацией
-      if (currentPage !== 3 && $(".footer").hasClass("show-on-mobile")) {
-        // Добавляем класс для анимации исчезновения
-        $(".footer").addClass("fade-out");
-        console.log("Footer: начинается анимация исчезновения");
-
-        // Убираем класс после завершения анимации
-        setTimeout(function () {
-          $(".footer").removeClass("show-on-mobile fade-out");
-          console.log("Footer: скрыт после анимации");
-        }, 300); // Быстрая анимация 300ms
-      }
+      // Убираем все старые классы footer (больше не нужны на мобильных)
+      $(".footer").removeClass("show-on-mobile fade-out");
 
       // Убираем все классы active-page
       $wrap.removeClass(function (index, css) {
@@ -198,23 +188,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
           currentMobileButton.addClass("fade-in-button");
           console.log("Кнопка: добавлен класс fade-in-button");
-
-          // Показываем footer только на третьей странице с задержкой
-          if (currentPage === 3) {
-            setTimeout(function () {
-              $(".footer").addClass("show-on-mobile");
-              console.log("Footer: показан на третьей странице с задержкой");
-            }, 800); // Задержка появления footer
-          } else {
-            // Скрываем footer с анимацией при переходе с третьей страницы
-            if ($(".footer").hasClass("show-on-mobile")) {
-              $(".footer").addClass("fade-out");
-              setTimeout(function () {
-                $(".footer").removeClass("show-on-mobile fade-out");
-                console.log("Footer: скрыт с анимацией");
-              }, 300);
-            }
-          }
         }
       }, 600); // Задержка для завершения анимации прокрутки
 
@@ -336,7 +309,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // FOOTER ФУНКЦИОНАЛЬНОСТЬ
     // ================================================
 
-    // Обработчик для ссылки в footer
+    // Обработчик для ссылки в footer (работает как для основного, так и для мобильного меню)
     $(".footer-link").on("click", function (e) {
       e.preventDefault(); // Предотвращаем стандартное поведение ссылки
 
@@ -351,6 +324,33 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Пример: показать уведомление
       showNotification("Спасибо за интерес! Скоро свяжемся с вами.");
+    });
+
+    // Обработчик для клика по футеру в мобильном меню
+    $(".mobile-menu-footer").on("click", function (e) {
+      e.preventDefault(); // Предотвращаем стандартное поведение
+
+      // Анимация нажатия
+      $(this).addClass("active");
+      setTimeout(() => {
+        $(this).removeClass("active");
+      }, 150);
+
+      // Здесь можно добавить функциональность (например, открытие модального окна, переход на страницу контактов и т.д.)
+      console.log("Mobile menu footer нажат!");
+    });
+
+    // Обработчик для клика по footer-content (без уведомления, только анимация)
+    $(".footer-content").on("click", function (e) {
+      e.preventDefault(); // Предотвращаем стандартное поведение
+
+      // Анимация нажатия
+      $(this).addClass("active");
+      setTimeout(() => {
+        $(this).removeClass("active");
+      }, 150);
+
+      console.log("Footer content нажат!");
     });
 
     // Функция для показа уведомления
@@ -419,9 +419,6 @@ document.addEventListener("DOMContentLoaded", function () {
           firstButton.addClass("button-from-left");
         }
         firstButton.addClass("fade-in-button");
-
-        // Скрываем footer на первой странице
-        $(".footer").removeClass("show-on-mobile");
       }, 800);
     }
   }

@@ -13,7 +13,7 @@
 /* Основной шрифт LT Remark */
 @font-face {
   font-family: "LT Remark";
-  src: url("LTRemark-May2021.otf") format("opentype");
+  src: url("LT Remark/LTRemark-May2021.otf") format("opentype");
   font-weight: 400;
   font-style: normal;
   font-display: swap; /* Оптимизация загрузки шрифтов */
@@ -22,7 +22,7 @@
 /* Жирный шрифт LT Remark */
 @font-face {
   font-family: "LT Remark";
-  src: url("LT-Remark-Bold3.otf") format("opentype");
+  src: url("LT Remark/LT-Remark-Bold3.otf") format("opentype");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -31,7 +31,7 @@
 /* Очень жирный шрифт LT Remark */
 @font-face {
   font-family: "LT Remark";
-  src: url("LT-Remark-Black3.otf") format("opentype");
+  src: url("LT Remark/LT-Remark-Black3.otf") format("opentype");
   font-weight: 900;
   font-style: normal;
   font-display: swap;
@@ -40,7 +40,7 @@
 /* Курсивный шрифт LT Remark */
 @font-face {
   font-family: "LT Remark";
-  src: url("LTRemarkItalic-May2021.otf") format("opentype");
+  src: url("LT Remark/LTRemarkItalic-May2021.otf") format("opentype");
   font-weight: 400;
   font-style: italic;
   font-display: swap;
@@ -49,7 +49,7 @@
 /* Жирный курсивный шрифт LT Remark */
 @font-face {
   font-family: "LT Remark";
-  src: url("LT-Remark-Bold-Italic.otf") format("opentype");
+  src: url("LT Remark/LT-Remark-Bold-Italic.otf") format("opentype");
   font-weight: 700;
   font-style: italic;
   font-display: swap;
@@ -143,6 +143,8 @@ body {
   height: 2px; /* Высота полоски */
   background-color: white; /* Белый цвет */
   border-radius: 1px; /* Скругленные края */
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* Плавные переходы */
+  transform-origin: center; /* Центр трансформации */
 }
 
 /* Стили для мобильного меню */
@@ -152,7 +154,7 @@ body {
   left: 0; /* Прилипаем к левому краю */
   width: 100%; /* Полная ширина экрана */
   height: 100vh; /* Полная высота экрана */
-  background-color: rgba(0, 0, 0, 0.95); /* Полупрозрачный черный фон */
+  background-color: rgba(0, 0, 0, 0.2); /* Полупрозрачный черный фон */
   backdrop-filter: blur(10px); /* Размытие фона */
   -webkit-backdrop-filter: blur(10px); /* Поддержка в Safari */
   display: flex; /* Flexbox для центрирования */
@@ -161,13 +163,15 @@ body {
   align-items: center; /* Центрирование по горизонтали */
   gap: 40px; /* Расстояние между ссылками */
   transform: translateX(-100%); /* Скрываем меню за левым краем */
-  transition: transform 0.3s ease; /* Плавная анимация появления */
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); /* Улучшенная анимация появления */
   z-index: 1000; /* Высокий z-index */
+  opacity: 0; /* Начальная прозрачность */
 }
 
 /* Класс для показа мобильного меню */
 .mobile-menu.active {
   transform: translateX(0); /* Возвращаем меню в видимую область */
+  opacity: 1; /* Полная видимость */
 }
 
 /* Стили для ссылок в мобильном меню */
@@ -178,24 +182,74 @@ body {
   font-size: 27px; /* Размер шрифта увеличен на 3 пункта (было 24px) */
   font-weight: 400; /* Обычная жирность */
   letter-spacing: 1px; /* Увеличенное расстояние между буквами */
-  padding: 12px 24px; /* Внутренние отступы */
-  border-radius: 8px; /* Скругленные углы */
+  padding: 16px 32px; /* Увеличенные внутренние отступы */
+  border-radius: 25px; /* Скругленные углы как у футера */
   position: relative; /* Относительное позиционирование */
+  opacity: 0; /* Начальная прозрачность */
+  transform: translateY(20px); /* Начальное смещение вниз */
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* Плавные переходы */
+  background: rgba(
+    255,
+    255,
+    255,
+    0.1
+  ); /* Полупрозрачный белый фон как у футера */
+  backdrop-filter: blur(10px); /* Размытие фона */
+  -webkit-backdrop-filter: blur(10px); /* Поддержка в Safari */
+  border: 1px solid rgba(255, 255, 255, 0.2); /* Тонкая светлая граница */
+  text-align: center; /* Центрируем текст */
+  min-width: 200px; /* Минимальная ширина для единообразия */
+}
+
+/* Анимация появления ссылок в мобильном меню */
+.mobile-menu.active .mobile-link {
+  opacity: 1; /* Полная видимость */
+  transform: translateY(0); /* Убираем смещение */
+}
+
+/* Задержки для последовательного появления ссылок */
+.mobile-menu.active .mobile-link:nth-child(1) {
+  transition-delay: 0.1s; /* Задержка для первой ссылки */
+}
+
+.mobile-menu.active .mobile-link:nth-child(2) {
+  transition-delay: 0.2s; /* Задержка для второй ссылки */
+}
+
+.mobile-menu.active .mobile-link:nth-child(3) {
+  transition-delay: 0.3s; /* Задержка для третьей ссылки */
+}
+
+/* Эффект при наведении на ссылки */
+.mobile-link:hover {
+  transform: translateY(-2px) scale(1.05); /* Поднимаем и увеличиваем */
+  background: rgba(255, 255, 255, 0.2); /* Более светлый фон при наведении */
+  border-color: rgba(255, 255, 255, 0.4); /* Более светлая граница */
+  box-shadow: 0 8px 25px rgba(255, 255, 255, 0.15); /* Тень при наведении */
+  color: rgba(255, 255, 255, 1); /* Полностью белый цвет */
+}
+
+/* Эффект при нажатии на ссылки */
+.mobile-link:active {
+  transform: translateY(0) scale(1.02); /* Эффект нажатия */
+  background: rgba(255, 255, 255, 0.25); /* Еще более светлый фон при нажатии */
+  transition: all 0.1s ease; /* Быстрая анимация нажатия */
 }
 
 /* Анимация для активного состояния бургер-меню */
 .burger.active .burger-line:nth-child(1) {
-  transform: rotate(45deg) translate(6px, 6px); /* Поворачиваем первую полоску */
+  transform: rotate(45deg) translateY(6px); /* Поворачиваем первую полоску и смещаем вниз */
 }
 
-/* Скрываем среднюю полоску */
+/* Скрываем среднюю полоску с плавной анимацией */
 .burger.active .burger-line:nth-child(2) {
   opacity: 0; /* Делаем невидимой */
+  transform: scaleX(0); /* Сжимаем по горизонтали */
 }
 
 /* Анимация для третьей полоски */
 .burger.active .burger-line:nth-child(3) {
-  transform: rotate(-45deg) translate(6px, -6px); /* Поворачиваем третью полоску */
+  transform: rotate(-45deg) translateY(-6px); /* Поворачиваем третью полоску и смещаем вверх */
 }
 
 /* ================================================ */
@@ -684,6 +738,19 @@ body {
   margin: 0 auto; /* Центрируем */
   padding: 0 40px; /* Внутренние отступы */
   gap: 10px; /* Расстояние между текстом и иконкой */
+  cursor: pointer; /* Курсор-указатель для кликабельности */
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* Плавные переходы */
+}
+
+/* Эффект при наведении на footer-content */
+.footer-content:hover {
+  transform: translateY(-2px); /* Поднимаем при наведении */
+}
+
+/* Эффект при нажатии на footer-content */
+.footer-content:active {
+  transform: translateY(0) scale(0.98); /* Эффект нажатия */
+  transition: all 0.1s ease; /* Быстрая анимация нажатия */
 }
 
 /* Стили для текста в footer */
@@ -718,36 +785,12 @@ body {
   cursor: pointer; /* Курсор-указатель */
 }
 
-/* Стили для SVG иконки */
-.heart-icon {
-  width: 14px; /* Уменьшенный размер иконки */
-  height: 14px; /* Уменьшенный размер иконки */
+/* Стили для SVG иконки Telegram */
+.telegram-icon {
+  width: 16px; /* Размер иконки Telegram */
+  height: 14px; /* Размер иконки Telegram */
   color: rgba(255, 255, 255, 0.8); /* Цвет иконки */
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* Плавные переходы */
-}
-
-/* Эффект при наведении на ссылку */
-.footer-link:hover {
-  background-color: rgba(
-    255,
-    255,
-    255,
-    0.2
-  ); /* Более светлый фон при наведении */
-  transform: scale(1.1); /* Увеличиваем размер */
-  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2); /* Тень при наведении */
-}
-
-/* Эффект при наведении на иконку */
-.footer-link:hover .heart-icon {
-  color: rgba(255, 255, 255, 1); /* Полностью белый цвет при наведении */
-  transform: scale(1.1); /* Увеличиваем размер иконки */
-}
-
-/* Эффект при нажатии */
-.footer-link:active {
-  transform: scale(0.95); /* Уменьшаем размер при нажатии */
-  transition: all 0.1s ease; /* Быстрая анимация нажатия */
 }
 
 /* ================================================ */
@@ -899,7 +942,7 @@ body {
   }
 }
 
-/* Скрываем footer на мобильных по умолчанию */
+/* Скрываем основной footer на мобильных устройствах */
 @media (max-width: 770px) {
   /* Гарантируем, что header всегда виден на мобильных */
   .header {
@@ -912,60 +955,111 @@ body {
     visibility: visible !important; /* Видимость */
   }
 
+  /* Полностью скрываем основной footer на мобильных */
   .footer {
-    display: none; /* Скрываем footer на мобильных по умолчанию */
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* Плавная анимация исчезновения */
+    display: none !important; /* Принудительно скрываем footer на мобильных */
   }
 
-  /* Анимация исчезновения footer */
-  .footer.fade-out {
-    opacity: 0 !important;
-    transform: translateY(100%) !important;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-  }
-
-  /* Показываем footer только на третьей странице */
-  .footer.show-on-mobile {
-    display: block; /* Показываем footer */
-    position: fixed; /* Фиксированное позиционирование */
-    bottom: 0; /* Прилипаем к нижнему краю */
-    left: 0; /* Прилипаем к левому краю */
-    padding: 6px 0; /* Компактные отступы */
+  /* Стили для футера в мобильном меню */
+  .mobile-menu-footer {
+    position: absolute; /* Абсолютное позиционирование */
+    bottom: 40px; /* Отступ снизу */
+    left: 50%; /* Центрируем по горизонтали */
+    transform: translateX(-50%) translateY(20px); /* Точное центрирование с начальным смещением */
+    width: 100%; /* Полная ширина */
+    max-width: 300px; /* Максимальная ширина */
+    padding: 0 20px; /* Внутренние отступы */
     opacity: 0; /* Начальная прозрачность */
-    transform: translateY(100%); /* Начальное смещение вниз */
-    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); /* Плавная анимация */
-    animation: footerSlideIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.2s forwards; /* Анимация появления */
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); /* Плавные переходы */
+    cursor: pointer; /* Курсор-указатель для кликабельности */
   }
 
-  /* Анимация появления footer */
-  @keyframes footerSlideIn {
-    0% {
-      opacity: 0;
-      transform: translateY(100%);
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0);
-    }
+  /* Анимация появления футера в мобильном меню */
+  .mobile-menu.active .mobile-menu-footer {
+    opacity: 1; /* Полная видимость */
+    transform: translateX(-50%) translateY(0); /* Убираем смещение */
+    transition-delay: 0.4s; /* Задержка появления футера */
   }
 
-  .footer.show-on-mobile .footer-content {
-    padding: 0 20px; /* Уменьшенные отступы на мобильных */
-    gap: 8px; /* Уменьшенное расстояние между элементами */
+  /* Эффект при наведении на футер в мобильном меню */
+  .mobile-menu-footer:hover {
+    transform: translateX(-50%) translateY(-2px); /* Поднимаем футер при наведении */
   }
 
-  .footer.show-on-mobile .footer-text p {
-    font-size: 13px; /* Размер шрифта увеличен на 3 пункта (было 10px) */
+  /* Эффект при нажатии на футер в мобильном меню */
+  .mobile-menu-footer:active {
+    transform: translateX(-50%) translateY(0) scale(0.98); /* Эффект нажатия */
+    transition: all 0.1s ease; /* Быстрая анимация нажатия */
   }
 
-  .footer.show-on-mobile .footer-link {
-    width: 20px; /* Уменьшенная ширина области клика */
-    height: 20px; /* Уменьшенная высота области клика */
+  /* Стили для содержимого футера в мобильном меню */
+  .mobile-menu-footer .footer-content {
+    display: flex; /* Flexbox для выравнивания элементов */
+    justify-content: center; /* Центрируем элементы */
+    align-items: center; /* Выравниваем по центру по вертикали */
+    gap: 12px; /* Расстояние между текстом и иконкой */
+    background: rgba(255, 255, 255, 0.1); /* Полупрозрачный белый фон */
+    padding: 12px 20px; /* Внутренние отступы */
+    border-radius: 25px; /* Скругленные углы */
+    backdrop-filter: blur(10px); /* Размытие фона */
+    -webkit-backdrop-filter: blur(10px); /* Поддержка в Safari */
+    border: 1px solid rgba(255, 255, 255, 0.2); /* Тонкая светлая граница */
   }
 
-  .footer.show-on-mobile .heart-icon {
-    width: 12px; /* Уменьшенный размер иконки */
-    height: 12px; /* Уменьшенный размер иконки */
+  /* Стили для текста в футере мобильного меню */
+  .mobile-menu-footer .footer-text p {
+    color: rgba(255, 255, 255, 0.9); /* Полупрозрачный белый цвет */
+    font-family: "LT Remark", "Helvetica", "Arial", sans-serif; /* Шрифт LT Remark */
+    font-size: 14px; /* Размер шрифта */
+    font-weight: 400; /* Обычная жирность */
+    letter-spacing: 0.3px; /* Расстояние между буквами */
+    margin: 0; /* Убираем внешние отступы */
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3); /* Тень текста */
+  }
+
+  /* Стили для иконки в футере мобильного меню */
+  .mobile-menu-footer .footer-link {
+    display: flex; /* Flexbox для центрирования иконки */
+    align-items: center; /* Выравниваем по центру */
+    justify-content: center; /* Центрируем по горизонтали */
+    width: 32px; /* Ширина области клика */
+    height: 32px; /* Высота области клика */
+    border-radius: 50%; /* Круглая область клика */
+    background-color: rgba(255, 255, 255, 0.15); /* Полупрозрачный фон */
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* Плавные переходы */
+    text-decoration: none; /* Убираем подчеркивание */
+    cursor: pointer; /* Курсор-указатель */
+  }
+
+  /* Стили для SVG иконки Telegram в футере мобильного меню */
+  .mobile-menu-footer .telegram-icon {
+    width: 18px; /* Размер иконки Telegram */
+    height: 16px; /* Размер иконки Telegram */
+    color: rgba(255, 255, 255, 0.8); /* Цвет иконки */
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* Плавные переходы */
+  }
+
+  /* Эффект при наведении на ссылку в футере мобильного меню */
+  .mobile-menu-footer .footer-link:hover {
+    background-color: rgba(
+      255,
+      255,
+      255,
+      0.25
+    ); /* Более светлый фон при наведении */
+    transform: scale(1.1); /* Увеличиваем размер */
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2); /* Тень при наведении */
+  }
+
+  /* Эффект при наведении на иконку Telegram в футере мобильного меню */
+  .mobile-menu-footer .footer-link:hover .telegram-icon {
+    color: rgba(255, 255, 255, 1); /* Полностью белый цвет при наведении */
+  }
+
+  /* Эффект при нажатии в футере мобильного меню */
+  .mobile-menu-footer .footer-link:active {
+    transform: scale(0.95); /* Уменьшаем размер при нажатии */
+    transition: all 0.1s ease; /* Быстрая анимация нажатия */
   }
 }
 
