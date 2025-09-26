@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<!-- ================================================ -->
+<!-- СТРАНИЦА КОНТАКТОВ -->
+<!-- ================================================ -->
+<html lang="ru">
+  <!-- Указываем язык страницы для поисковых систем и скрин-ридеров -->
+  <head>
+    <!-- ================================================ -->
+    <!-- МЕТАДАННЫЕ И ПОДКЛЮЧЕНИЯ -->
+    <!-- ================================================ -->
+    <meta charset="UTF-8" />
+    <!-- Кодировка UTF-8 для поддержки всех символов включая кириллицу -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Настройка viewport для корректного отображения на мобильных устройствах -->
+    <title>Контакты - Варвара Нещеретова</title>
+    <!-- Заголовок страницы, отображается во вкладке браузера -->
+
+    <!-- Подключение базовых стилей для всех страниц -->
+    <link rel="stylesheet" href="../assets/css/base.css" />
+    <!-- Подключение специфичных стилей для страницы контактов -->
+    <link rel="stylesheet" href="../assets/css/contacts.css" />
+    <!-- Подключение jQuery для упрощения работы с DOM -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Подключение базового JavaScript для всех страниц -->
+    <script src="../assets/js/base.js" defer></script>
+    <!-- Подключение специфичного JavaScript для страницы контактов -->
+    <script src="../assets/js/contacts.js" defer></script>
+  </head>
+
+  <body>
+    <!-- ================================================ -->
+    <!-- ЗАГОЛОВОК И НАВИГАЦИЯ -->
+    <!-- ================================================ -->
+    <header class="header">
+      <!-- Имя автора/владельца сайта -->
+      <div class="name">Варвара Нещеретова</div>
+
+      <!-- Основная навигация для десктопа -->
+      <nav class="nav">
+        <a href="../index.html" class="nav-link">Главная</a>
+        <a href="#" class="nav-link">Лента</a>
+        <a href="#" class="nav-link">Гардероб</a>
+        <a href="#" class="nav-link active">Контакты</a>
+      </nav>
+
+      <!-- Кнопка бургер-меню для мобильных устройств -->
+      <div class="burger" id="burger">
+        <span class="burger-line"></span>
+        <span class="burger-line"></span>
+        <span class="burger-line"></span>
+      </div>
+    </header>
+
+    <!-- ================================================ -->
+    <!-- МОБИЛЬНОЕ МЕНЮ (СКРЫТО ПО УМОЛЧАНИЮ) -->
+    <!-- ================================================ -->
+    <div class="mobile-menu" id="mobileMenu">
+      <a href="../index.html" class="mobile-link">Главная</a>
+      <a href="#" class="mobile-link">Лента</a>
+      <a href="#" class="mobile-link">Гардероб</a>
+      <a href="#" class="mobile-link">Контакты</a>
+
+      <!-- Футер в мобильном меню -->
+      <a href="#" class="mobile-menu-footer" title="Связаться">
+        <p>Made by: @vchatkin</p>
+        <img
+          src="../assets/icons/Telegram.svg"
+          alt="Telegram"
+          class="telegram-icon"
+          width="19"
+          height="17"
+        />
+      </a>
+    </div>
+
+    <!-- ================================================ -->
+    <!-- ОСНОВНОЕ СОДЕРЖИМОЕ - КОНТАКТЫ -->
+    <!-- ================================================ -->
+    <main class="contacts-main">
+      <!-- Фоновое изображение -->
+      <div class="contacts-background">
+        <div class="background-overlay"></div>
+      </div>
+
+      <!-- Контент страницы контактов -->
+      <div class="contacts-content">
+        <!-- Заголовок страницы -->
+        <div class="contacts-header">
+          <h1 class="contacts-title">Свяжитесь со мной</h1>
+          <p class="contacts-subtitle">
+            Готова ответить на ваши вопросы и обсудить сотрудничество
+          </p>
+        </div>
+
+        <!-- Основной контент -->
+        <div class="contacts-body">
+          <!-- Слайдер с социальными сетями (только для десктопа и планшета) -->
+          <div class="contacts-slider desktop-tablet-only">
+            <div class="slider-container">
+              <div class="slider-panel active social-panel" data-social="email">
+                <div class="rotated-label">Email</div>
+                <div class="telegram-icon-container">
+                  <img
+                    src="../assets/icons/Telegram.svg"
+                    alt="Telegram"
+                    class="telegram-icon"
+                    width="96"
+                    height="90"
+                  />
+                </div>
+                <h3>Email</h3>
+                <p>varvara@example.com</p>
+                <div class="description">Быстрая связь по email</div>
+              </div>
+              <div class="slider-panel social-panel" data-social="phone">
+                <div class="rotated-label">Телефон</div>
+                <div class="telegram-icon-container">
+                  <img
+                    src="../assets/icons/Telegram.svg"
+                    alt="Telegram"
+                    class="telegram-icon"
+                    width="96"
+                    height="90"
+                  />
+                </div>
+                <h3>Телефон</h3>
+                <p>+7 (999) 123-45-67</p>
+                <div class="description">Прямой звонок</div>
+              </div>
+              <div class="slider-panel social-panel" data-social="telegram">
+                <div class="rotated-label">Telegram</div>
+                <div class="telegram-icon-container">
+                  <img
+                    src="../assets/icons/Telegram.svg"
+                    alt="Telegram"
+                    class="telegram-icon"
+                    width="96"
+                    height="90"
+                  />
+                </div>
+                <h3>Telegram</h3>
+                <p>@varvara_nesh</p>
+                <div class="description">Мгновенные сообщения</div>
+              </div>
+              <div class="slider-panel social-panel" data-social="instagram">
+                <div class="rotated-label">Instagram</div>
+                <div class="telegram-icon-container">
+                  <img
+                    src="../assets/icons/Telegram.svg"
+                    alt="Telegram"
+                    class="telegram-icon"
+                    width="96"
+                    height="90"
+                  />
+                </div>
+                <h3>Instagram</h3>
+                <p>@varvara_nesh</p>
+                <div class="description">Фото и истории</div>
+              </div>
+              <div class="slider-panel social-panel" data-social="linkedin">
+                <div class="rotated-label">LinkedIn</div>
+                <div class="telegram-icon-container">
+                  <img
+                    src="../assets/icons/Telegram.svg"
+                    alt="Telegram"
+                    class="telegram-icon"
+                    width="96"
+                    height="90"
+                  />
+                </div>
+                <h3>LinkedIn</h3>
+                <p>Варвара Нещеретова</p>
+                <div class="description">Профессиональная сеть</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Мобильные кнопки контактов (только для мобильных) -->
+          <div class="mobile-contact-buttons mobile-only">
+            <div class="mobile-button" data-social="email">
+              <div class="mobile-button-icon">
+                <img
+                  src="../assets/icons/Telegram.svg"
+                  alt="Telegram"
+                  class="telegram-icon"
+                  width="24"
+                  height="24"
+                />
+              </div>
+              <div class="mobile-button-content">
+                <h3>Email</h3>
+                <p>varvara@example.com</p>
+              </div>
+            </div>
+
+            <div class="mobile-button" data-social="phone">
+              <div class="mobile-button-icon">
+                <img
+                  src="../assets/icons/Telegram.svg"
+                  alt="Telegram"
+                  class="telegram-icon"
+                  width="24"
+                  height="24"
+                />
+              </div>
+              <div class="mobile-button-content">
+                <h3>Телефон</h3>
+                <p>+7 (999) 123-45-67</p>
+              </div>
+            </div>
+
+            <div class="mobile-button" data-social="telegram">
+              <div class="mobile-button-icon">
+                <img
+                  src="../assets/icons/Telegram.svg"
+                  alt="Telegram"
+                  class="telegram-icon"
+                  width="24"
+                  height="24"
+                />
+              </div>
+              <div class="mobile-button-content">
+                <h3>Telegram</h3>
+                <p>@varvara_nesh</p>
+              </div>
+            </div>
+
+            <div class="mobile-button" data-social="instagram">
+              <div class="mobile-button-icon">
+                <img
+                  src="../assets/icons/Telegram.svg"
+                  alt="Telegram"
+                  class="telegram-icon"
+                  width="24"
+                  height="24"
+                />
+              </div>
+              <div class="mobile-button-content">
+                <h3>Instagram</h3>
+                <p>@varvara_nesh</p>
+              </div>
+            </div>
+
+            <div class="mobile-button" data-social="linkedin">
+              <div class="mobile-button-icon">
+                <img
+                  src="../assets/icons/Telegram.svg"
+                  alt="Telegram"
+                  class="telegram-icon"
+                  width="24"
+                  height="24"
+                />
+              </div>
+              <div class="mobile-button-content">
+                <h3>LinkedIn</h3>
+                <p>Варвара Нещеретова</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- ================================================ -->
+    <!-- FOOTER -->
+    <!-- ================================================ -->
+    <footer class="footer">
+      <a href="#" class="footer-content" title="Связаться">
+        <div class="footer-text">
+          <p>Made by: @vchatkin</p>
+        </div>
+        <div class="footer-icon">
+          <img
+            src="../assets/icons/Telegram.svg"
+            alt="Telegram"
+            class="telegram-icon"
+            width="19"
+            height="17"
+          />
+        </div>
+      </a>
+    </footer>
+  </body>
+</html>
