@@ -1,0 +1,1213 @@
+/* ================================================ */
+/* СТИЛИ ДЛЯ СТРАНИЦЫ КОНТАКТОВ */
+/* ================================================ */
+/* 
+  Специфичные стили для страницы контактов
+  Включает: фоновое изображение, контактную информацию, форму обратной связи
+*/
+
+/* ================================================ */
+/* ОСНОВНОЕ ОКНО С КОНТАКТАМИ */
+/* ================================================ */
+
+/* Основное окно страницы контактов */
+.contacts-main {
+  position: relative; /* Относительное позиционирование для абсолютного позиционирования дочерних элементов */
+  width: 100vw; /* Полная ширина экрана */
+  min-height: 100vh; /* Минимальная высота экрана */
+  overflow: hidden; /* Скрываем переполнение */
+  z-index: 1; /* Базовый z-index для контейнера */
+}
+
+/* Фоновое изображение */
+.contacts-background {
+  position: absolute; /* Абсолютное позиционирование */
+  top: 0; /* Прилипаем к верху */
+  left: 0; /* Прилипаем к левому краю */
+  width: 100%; /* Полная ширина */
+  height: 100%; /* Полная высота */
+  background-image: url("../img/1.JPG"); /* Фоновое изображение */
+  background-size: cover; /* Полностью заполняем объект */
+  background-position: center; /* Центрируем изображение */
+  background-repeat: no-repeat; /* Не повторяем изображение */
+  background-attachment: scroll; /* Статичный фон при прокрутке */
+  z-index: -2; /* Позади всего контента */
+}
+
+/* Наложение на фоновое изображение */
+.background-overlay {
+  position: absolute; /* Абсолютное позиционирование */
+  top: 0; /* Прилипаем к верху */
+  left: 0; /* Прилипаем к левому краю */
+  width: 100%; /* Полная ширина */
+  height: 100%; /* Полная высота */
+  background: rgba(0, 0, 0, 0.4); /* Полупрозрачный черный фон */
+  backdrop-filter: blur(1px); /* Легкое размытие фона */
+  -webkit-backdrop-filter: blur(1px); /* Поддержка в Safari */
+  z-index: -1; /* Позади контента, но поверх фона */
+}
+
+/* ================================================ */
+/* КОНТЕНТ СТРАНИЦЫ */
+/* ================================================ */
+
+/* Контейнер для всего контента */
+.contacts-content {
+  position: relative; /* Относительное позиционирование */
+  z-index: 10; /* Высокий z-index для отображения поверх фона */
+  padding: 120px 40px 80px; /* Отступы: сверху для header, снизу для footer */
+  max-width: 1200px; /* Максимальная ширина контента */
+  margin: 0 auto; /* Центрируем контент */
+  min-height: calc(100vh - 200px); /* Минимальная высота с учетом отступов */
+}
+
+/* Заголовок страницы */
+.contacts-header {
+  text-align: center; /* Центрируем заголовок */
+  margin-bottom: 60px; /* Отступ снизу */
+  opacity: 0; /* Начальная прозрачность */
+  transform: translateY(30px); /* Начальное смещение вниз */
+  animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.2s forwards; /* Анимация появления */
+}
+
+/* Заголовок страницы */
+.contacts-title {
+  color: white; /* Белый цвет */
+  font-family: "LT Remark", "Helvetica", "Arial", sans-serif; /* Шрифт LT Remark */
+  font-size: 48px; /* Размер шрифта */
+  font-weight: 700; /* Жирность */
+  margin-bottom: 20px; /* Отступ снизу */
+  letter-spacing: 2px; /* Расстояние между буквами */
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.7); /* Тень текста */
+  line-height: 1.2; /* Межстрочный интервал */
+}
+
+/* Подзаголовок страницы */
+.contacts-subtitle {
+  color: rgba(255, 255, 255, 0.9); /* Полупрозрачный белый */
+  font-family: "LT Remark", "Helvetica", "Arial", sans-serif; /* Шрифт LT Remark */
+  font-size: 20px; /* Размер шрифта */
+  font-weight: 400; /* Обычная жирность */
+  line-height: 1.6; /* Межстрочный интервал */
+  letter-spacing: 0.5px; /* Расстояние между буквами */
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5); /* Тень текста */
+  max-width: 600px; /* Максимальная ширина */
+  margin: 0 auto; /* Центрируем */
+}
+
+/* ================================================ */
+/* ОСНОВНОЙ КОНТЕНТ */
+/* ================================================ */
+
+/* Контейнер для основного контента */
+.contacts-body {
+  display: flex; /* Flexbox для центрирования */
+  justify-content: center; /* Центрируем по горизонтали */
+  align-items: center; /* Центрируем по вертикали */
+  gap: 40px; /* Расстояние между слайдером и контактной информацией */
+}
+
+/* ================================================ */
+/* СЛАЙДЕР */
+/* ================================================ */
+
+/* Контейнер для слайдера */
+.contacts-slider {
+  width: 90vw; /* Ширина как в slider папке */
+  height: 80vh; /* Высота как в slider папке */
+  position: relative; /* Относительное позиционирование */
+  margin: 0 auto; /* Центрируем слайдер */
+  z-index: 10; /* Обычный z-index */
+  opacity: 0; /* Начальная прозрачность */
+  transform: translateX(30px); /* Начальное смещение вправо */
+  animation: fadeInRight 1.2s cubic-bezier(0.4, 0, 0.2, 1) 0.3s forwards; /* Плавная анимация появления */
+}
+
+/* Контейнер панелей слайдера */
+.slider-container {
+  display: flex; /* Flexbox для горизонтального расположения панелей */
+  width: 100%; /* Полная ширина */
+  height: 100%; /* Полная высота */
+  border-radius: 20px; /* Закругленные углы контейнера */
+  overflow: hidden; /* Скрываем переполнение */
+  padding: 0; /* Убираем отступы, используем margin в панелях */
+}
+
+/* Повернутые метки для неактивных панелей */
+.rotated-label {
+  position: absolute; /* Абсолютное позиционирование */
+  top: 50%; /* Центрируем по вертикали */
+  left: 50%; /* Центрируем по горизонтали */
+  transform: translate(-50%, -50%) rotate(90deg); /* Центрируем и поворачиваем на 90 градусов */
+  font-family: "LT Remark", "Helvetica", "Arial", sans-serif; /* Шрифт LT Remark */
+  font-size: 20px; /* Размер шрифта */
+  font-weight: 600; /* Жирность */
+  color: rgba(255, 255, 255, 0.8); /* Полупрозрачный белый */
+  letter-spacing: 1px; /* Расстояние между буквами */
+  white-space: nowrap; /* Запрещаем перенос строк */
+  z-index: 5; /* Поверх других элементов */
+  opacity: 1; /* Показываем по умолчанию */
+  transition: opacity 0.1s ease; /* Плавное исчезновение */
+  pointer-events: none; /* Отключаем взаимодействие с мышью */
+}
+
+/* Скрываем повернутые метки для активных панелей */
+.slider-panel.active .rotated-label {
+  opacity: 0; /* Скрываем при активации */
+  transition: opacity 0.1s ease; /* Плавное исчезновение */
+}
+
+/* Панель слайдера */
+.slider-panel {
+  background: rgba(0, 0, 0, 0.1); /* Полупрозрачный фон */
+  backdrop-filter: blur(10px); /* Размытие фона */
+  -webkit-backdrop-filter: blur(10px); /* Поддержка в Safari */
+  border: 1px solid rgba(255, 255, 255, 0.2); /* Тонкая светлая граница */
+  height: 100%; /* Полная высота */
+  border-radius: 50px; /* Закругленные углы как в slider папке */
+  color: white; /* Белый цвет текста */
+  cursor: pointer; /* Курсор-указатель */
+  flex: 0.5; /* Ширина как в slider папке */
+  margin: 10px; /* Отступы как в slider папке */
+  position: relative; /* Относительное позиционирование */
+  transition: flex 0.7s ease-in; /* Анимация как в slider папке */
+  -webkit-transition: all 700ms ease-in; /* Поддержка в Safari */
+  display: flex; /* Flexbox для центрирования контента */
+  flex-direction: column; /* Вертикальное расположение */
+  align-items: center; /* Выравниваем по центру */
+  justify-content: center; /* Центрируем по вертикали */
+  padding: 20px; /* Внутренние отступы */
+  text-align: center; /* Центрируем текст */
+  overflow: hidden; /* Скрываем переполнение */
+  background-color: rgba(0, 0, 0, 0.4); /* Полупрозрачный фон */
+}
+
+/* Контейнер для иконки Telegram */
+.telegram-icon-container {
+  position: relative; /* Относительное позиционирование */
+  margin-bottom: 15px; /* Отступ снизу */
+  opacity: 0; /* Скрываем по умолчанию */
+  transition: opacity 0.3s ease; /* Простая анимация появления */
+  z-index: 10; /* Поверх текста */
+  display: flex; /* Flexbox для центрирования */
+  justify-content: center; /* Центрируем по горизонтали */
+  align-items: center; /* Центрируем по вертикали */
+}
+
+/* Иконка Telegram */
+.telegram-icon {
+  width: 96px; /* Увеличенная втрое ширина иконки */
+  height: 90px; /* Увеличенная втрое высота иконки */
+  filter: brightness(0.9); /* Немного затемняем */
+  transition: opacity 0.3s ease; /* Простая анимация появления */
+}
+
+/* Стили для названий социальных сетей в закрытом состоянии */
+.slider-panel h3 {
+  font-family: "LT Remark", "Helvetica", "Arial", sans-serif; /* Шрифт LT Remark */
+  font-size: 18px; /* Размер шрифта для закрытых панелей */
+  font-weight: 600; /* Жирность */
+  margin: 0; /* Убираем отступы */
+  opacity: 0; /* Скрываем название в закрытом состоянии */
+  transform: translateY(20px) scale(0.9); /* Начальное смещение и масштаб */
+  text-shadow: none; /* Убираем тень текста */
+  letter-spacing: 1px; /* Расстояние между буквами */
+  line-height: 1.2; /* Межстрочный интервал */
+  text-align: center; /* Центрируем текст */
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1); /* Плавная анимация с улучшенной кривой */
+  color: #ffffff; /* Белый цвет текста */
+  width: 200px; /* Фиксированная ширина текста */
+  white-space: nowrap; /* Запрещаем перенос строк */
+  overflow: hidden; /* Скрываем переполнение */
+}
+
+/* Активная панель слайдера */
+.slider-panel.active {
+  flex: 5; /* Ширина как в slider папке */
+}
+
+/* Стили для активной панели */
+.slider-panel.active h3 {
+  opacity: 1; /* Показываем название в активной панели */
+  transform: translateY(0) scale(1); /* Возвращаем в исходное положение и масштаб */
+  font-size: 32px; /* Увеличенный размер для активной панели */
+  margin-bottom: 20px; /* Отступ снизу */
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.2s; /* Плавная анимация с задержкой */
+  text-shadow: none; /* Убираем тень текста */
+  color: #ffffff; /* Белый цвет текста */
+  width: 200px; /* Фиксированная ширина текста */
+  white-space: nowrap; /* Запрещаем перенос строк */
+  overflow: hidden; /* Скрываем переполнение */
+  animation: textGlow 2s ease-in-out infinite alternate; /* Анимация свечения */
+}
+
+/* Анимация свечения текста */
+@keyframes textGlow {
+  0% {
+    text-shadow: none;
+  }
+  100% {
+    text-shadow: none;
+  }
+}
+
+/* Иконка в активной панели */
+.slider-panel.active .telegram-icon-container {
+  opacity: 1; /* Показываем иконку */
+  transition: opacity 0.5s ease 0.1s; /* Плавная анимация с небольшой задержкой */
+}
+
+/* Иконка в неактивных панелях */
+.slider-panel:not(.active) .telegram-icon-container {
+  opacity: 0; /* Скрываем иконку */
+  transition: opacity 0.3s ease; /* Простая анимация исчезания */
+}
+
+/* Описание в панели слайдера */
+.slider-panel p {
+  font-family: "LT Remark", "Helvetica", "Arial", sans-serif; /* Шрифт LT Remark */
+  font-size: 20px; /* Еще больше увеличенный размер шрифта */
+  font-weight: 400; /* Обычная жирность */
+  margin: 0; /* Убираем внешние отступы */
+  opacity: 0; /* Начальная прозрачность */
+  transform: translateY(15px) scale(0.95); /* Начальное смещение и масштаб */
+  text-shadow: none; /* Убираем тень текста */
+  letter-spacing: 0.5px; /* Расстояние между буквами */
+  line-height: 1.4; /* Межстрочный интервал */
+  text-align: center; /* Центрируем текст */
+  transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1) 0.3s; /* Плавная анимация с задержкой */
+  color: #ffffff; /* Белый цвет текста */
+  width: 250px; /* Фиксированная ширина текста */
+  white-space: nowrap; /* Запрещаем перенос строк */
+  overflow: hidden; /* Скрываем переполнение */
+}
+
+/* Активная панель слайдера */
+.slider-panel.active {
+  flex: 5; /* Ширина как в slider папке */
+}
+
+/* Описание активной панели */
+.slider-panel.active p {
+  opacity: 1; /* Показываем описание активной панели */
+  transform: translateY(0) scale(1); /* Возвращаем в исходное положение и масштаб */
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.4s; /* Плавная анимация с задержкой */
+  text-shadow: none; /* Убираем тень текста */
+  color: #ffffff; /* Белый цвет текста */
+  width: 250px; /* Фиксированная ширина текста */
+  white-space: nowrap; /* Запрещаем перенос строк */
+  overflow: hidden; /* Скрываем переполнение */
+  animation: textSlideIn 0.8s ease-out; /* Анимация появления */
+}
+
+/* Анимация появления текста */
+@keyframes textSlideIn {
+  0% {
+    transform: translateY(30px) scale(0.9);
+    opacity: 0;
+  }
+  50% {
+    transform: translateY(-5px) scale(1.02);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+/* Стили для дополнительного описания */
+.slider-panel .description {
+  font-family: "LT Remark", "Helvetica", "Arial", sans-serif; /* Шрифт LT Remark */
+  font-size: 16px; /* Размер шрифта */
+  font-weight: 300; /* Легкая жирность */
+  margin: 12px 0 0 0; /* Отступы */
+  opacity: 0; /* Начальная прозрачность */
+  transform: translateY(10px) scale(0.98); /* Начальное смещение и масштаб */
+  text-shadow: none; /* Убираем тень текста */
+  letter-spacing: 0.3px; /* Расстояние между буквами */
+  line-height: 1.3; /* Межстрочный интервал */
+  color: rgba(255, 255, 255, 0.9); /* Полупрозрачный белый */
+  text-align: center; /* Центрируем текст */
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.5s; /* Плавная анимация с задержкой */
+  color: rgba(255, 255, 255, 0.9); /* Полупрозрачный белый */
+  width: 200px; /* Фиксированная ширина текста */
+  white-space: nowrap; /* Запрещаем перенос строк */
+  overflow: hidden; /* Скрываем переполнение */
+}
+
+/* Описание в активной панели */
+.slider-panel.active .description {
+  opacity: 1; /* Показываем описание в активной панели */
+  transform: translateY(0) scale(1); /* Возвращаем в исходное положение и масштаб */
+  transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1) 0.6s; /* Плавная анимация с задержкой */
+  text-shadow: none; /* Убираем тень текста */
+  color: rgba(255, 255, 255, 0.9); /* Полупрозрачный белый */
+  width: 200px; /* Фиксированная ширина текста */
+  white-space: nowrap; /* Запрещаем перенос строк */
+  overflow: hidden; /* Скрываем переполнение */
+  animation: descriptionFadeIn 0.7s ease-out 0.6s; /* Анимация появления с задержкой */
+}
+
+/* Анимация появления описания */
+@keyframes descriptionFadeIn {
+  0% {
+    transform: translateY(20px) scale(0.95);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+/* Эффект при наведении на панель */
+.slider-panel:hover {
+  border-color: rgba(255, 255, 255, 0.4); /* Более светлая граница */
+  transform: translateY(-2px); /* Легкое поднятие при наведении */
+  background: rgba(255, 255, 255, 0.15); /* Более светлый фон при наведении */
+  background-color: rgba(0, 0, 0, 0.4); /* Полупрозрачный фон */
+}
+
+/* Эффект при наведении на иконку */
+.slider-panel:hover .telegram-icon {
+  filter: brightness(1.2); /* Увеличиваем яркость при наведении */
+  transform: scale(1.1); /* Увеличиваем размер при наведении */
+}
+
+/* ================================================ */
+/* МОБИЛЬНЫЕ ГОРИЗОНТАЛЬНЫЕ КНОПКИ КОНТАКТОВ */
+/* ================================================ */
+
+/* Скрываем мобильные кнопки на десктопе */
+.mobile-contact-buttons {
+  display: none; /* Скрываем на десктопе */
+}
+
+/* Мобильные стили для кнопок */
+@media (max-width: 768px) {
+  /* Показываем мобильные кнопки на мобильных устройствах */
+  .mobile-contact-buttons {
+    display: flex; /* Flexbox для горизонтального расположения */
+    flex-direction: column; /* Вертикальное расположение кнопок */
+    gap: 15px; /* Расстояние между кнопками */
+    width: 100%; /* Полная ширина */
+    margin: 20px 0; /* Отступы сверху и снизу */
+    opacity: 0; /* Начальная прозрачность */
+    transform: translateY(30px); /* Начальное смещение */
+    animation: fadeInUp 1s cubic-bezier(0.4, 0, 0.2, 1) 0.5s forwards; /* Плавная анимация появления */
+  }
+
+  /* Мобильная кнопка контакта */
+  .mobile-button {
+    display: flex; /* Flexbox для горизонтального расположения */
+    align-items: center; /* Выравниваем по центру по вертикали */
+    gap: 15px; /* Расстояние между иконкой и текстом */
+    padding: 20px; /* Внутренние отступы */
+    background: rgba(255, 255, 255, 0.1); /* Полупрозрачный белый фон */
+    border-radius: 15px; /* Скругленные углы */
+    backdrop-filter: blur(10px); /* Размытие фона */
+    -webkit-backdrop-filter: blur(10px); /* Поддержка в Safari */
+    border: 1px solid rgba(255, 255, 255, 0.2); /* Тонкая светлая граница */
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* Плавные переходы */
+    cursor: pointer; /* Курсор-указатель */
+    text-decoration: none; /* Убираем подчеркивание */
+    color: inherit; /* Наследуем цвет текста */
+  }
+
+  /* Эффект при наведении на мобильную кнопку */
+  .mobile-button:hover {
+    background: rgba(255, 255, 255, 0.15); /* Более светлый фон при наведении */
+    border-color: rgba(255, 255, 255, 0.3); /* Более светлая граница */
+    transform: translateY(-2px); /* Легкое поднятие при наведении */
+  }
+
+  /* Эффект при нажатии на мобильную кнопку */
+  .mobile-button:active {
+    transform: translateY(0); /* Возвращаем в исходное положение */
+    background: rgba(255, 255, 255, 0.2); /* Еще более светлый фон */
+  }
+
+  /* Иконка мобильной кнопки */
+  .mobile-button-icon {
+    width: 40px; /* Ширина иконки */
+    height: 40px; /* Высота иконки */
+    display: flex; /* Flexbox для центрирования */
+    align-items: center; /* Центрирование по вертикали */
+    justify-content: center; /* Центрирование по горизонтали */
+    background: rgba(255, 255, 255, 0.1); /* Полупрозрачный фон для иконки */
+    border-radius: 10px; /* Закругленные углы */
+    color: rgba(255, 255, 255, 0.9); /* Цвет иконки */
+    transition: all 0.3s ease; /* Плавная анимация */
+    flex-shrink: 0; /* Запрещаем сжатие иконки */
+  }
+
+  /* Эффект при наведении на иконку */
+  .mobile-button:hover .mobile-button-icon {
+    background: rgba(255, 255, 255, 0.2); /* Более светлый фон иконки */
+    color: #ffffff; /* Белый цвет иконки */
+    transform: scale(1.1); /* Увеличиваем иконку */
+  }
+
+  /* Контент мобильной кнопки */
+  .mobile-button-content {
+    flex: 1; /* Занимаем оставшееся пространство */
+    display: flex; /* Flexbox для вертикального расположения */
+    flex-direction: column; /* Вертикальное расположение */
+    gap: 5px; /* Расстояние между заголовком и описанием */
+  }
+
+  /* Заголовок мобильной кнопки */
+  .mobile-button-content h3 {
+    font-family: "LT Remark", "Helvetica", "Arial", sans-serif; /* Шрифт LT Remark */
+    font-size: 16px; /* Размер шрифта */
+    font-weight: 600; /* Жирность */
+    margin: 0; /* Убираем отступы */
+    color: #ffffff; /* Белый цвет текста */
+    line-height: 1.2; /* Межстрочный интервал */
+  }
+
+  /* Описание мобильной кнопки */
+  .mobile-button-content p {
+    font-family: "LT Remark", "Helvetica", "Arial", sans-serif; /* Шрифт LT Remark */
+    font-size: 14px; /* Размер шрифта */
+    font-weight: 400; /* Обычная жирность */
+    margin: 0; /* Убираем отступы */
+    color: rgba(255, 255, 255, 0.8); /* Полупрозрачный белый */
+    line-height: 1.3; /* Межстрочный интервал */
+  }
+
+  /* Анимация появления мобильных кнопок */
+  @keyframes fadeInUp {
+    0% {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+/* ================================================ */
+/* СОЦИАЛЬНЫЕ СЕТИ В СЛАЙДЕРЕ (УДАЛЕНЫ) */
+/* ================================================ */
+
+/* ================================================ */
+/* КОНТАКТНАЯ ИНФОРМАЦИЯ */
+/* ================================================ */
+
+/* Контейнер для контактной информации */
+.contact-info {
+  display: flex; /* Flexbox для вертикального расположения */
+  flex-direction: column; /* Вертикальное расположение */
+  gap: 30px; /* Расстояние между элементами */
+  opacity: 0; /* Начальная прозрачность */
+  transform: translateX(-30px); /* Начальное смещение влево */
+  animation: fadeInLeft 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.4s forwards; /* Анимация появления */
+}
+
+/* Элемент контактной информации */
+.contact-item {
+  display: flex; /* Flexbox для горизонтального расположения */
+  align-items: center; /* Выравниваем по центру по вертикали */
+  gap: 20px; /* Расстояние между иконкой и текстом */
+  padding: 25px; /* Внутренние отступы */
+  background: rgba(255, 255, 255, 0.1); /* Полупрозрачный белый фон */
+  border-radius: 15px; /* Скругленные углы */
+  backdrop-filter: blur(10px); /* Размытие фона */
+  -webkit-backdrop-filter: blur(10px); /* Поддержка в Safari */
+  border: 1px solid rgba(255, 255, 255, 0.2); /* Тонкая светлая граница */
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); /* Плавные переходы с улучшенной кривой */
+  cursor: pointer; /* Курсор-указатель */
+}
+
+/* Эффект при наведении на элемент контакта */
+.contact-item:hover {
+  transform: translateY(-5px); /* Поднимаем при наведении */
+  background: rgba(255, 255, 255, 0.15); /* Более светлый фон при наведении */
+  border-color: rgba(255, 255, 255, 0.3); /* Более светлая граница */
+  box-shadow: 0 10px 30px rgba(255, 255, 255, 0.1); /* Тень при наведении */
+}
+
+/* Иконка контакта */
+.contact-icon {
+  display: flex; /* Flexbox для центрирования */
+  align-items: center; /* Выравниваем по центру */
+  justify-content: center; /* Центрируем по горизонтали */
+  width: 50px; /* Ширина иконки */
+  height: 50px; /* Высота иконки */
+  background: rgba(255, 255, 255, 0.2); /* Полупрозрачный белый фон */
+  border-radius: 50%; /* Круглая форма */
+  color: white; /* Белый цвет иконки */
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); /* Плавные переходы с улучшенной кривой */
+  flex-shrink: 0; /* Не сжимаем иконку */
+}
+
+/* Эффект при наведении на иконку */
+.contact-item:hover .contact-icon {
+  background: rgba(255, 255, 255, 0.3); /* Более светлый фон при наведении */
+  transform: scale(1.1); /* Увеличиваем размер при наведении */
+}
+
+/* Детали контакта */
+.contact-details {
+  flex: 1; /* Занимаем оставшееся пространство */
+}
+
+/* Метка контакта */
+.contact-label {
+  color: white; /* Белый цвет */
+  font-family: "LT Remark", "Helvetica", "Arial", sans-serif; /* Шрифт LT Remark */
+  font-size: 18px; /* Размер шрифта */
+  font-weight: 600; /* Жирность */
+  margin-bottom: 5px; /* Отступ снизу */
+  letter-spacing: 0.5px; /* Расстояние между буквами */
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5); /* Тень текста */
+}
+
+/* Значение контакта */
+.contact-value {
+  color: rgba(255, 255, 255, 0.8); /* Полупрозрачный белый */
+  font-family: "LT Remark", "Helvetica", "Arial", sans-serif; /* Шрифт LT Remark */
+  font-size: 16px; /* Размер шрифта */
+  font-weight: 400; /* Обычная жирность */
+  line-height: 1.4; /* Межстрочный интервал */
+  letter-spacing: 0.3px; /* Расстояние между буквами */
+  text-shadow: 0 1px 5px rgba(0, 0, 0, 0.3); /* Тень текста */
+  margin: 0; /* Убираем внешние отступы */
+}
+
+/* ================================================ */
+/* АНИМАЦИИ */
+/* ================================================ */
+
+/* Анимация появления снизу */
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Анимация появления слева */
+@keyframes fadeInLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Анимация появления справа */
+@keyframes fadeInRight {
+  0% {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* ================================================ */
+/* АДАПТИВНЫЕ СТИЛИ ДЛЯ ДЕСКТОПА */
+/* ================================================ */
+
+/* Стили для больших экранов (только десктоп) */
+@media (min-width: 1025px) {
+  /* Скрываем контактную информацию на десктопе */
+  .contact-info.mobile-only {
+    display: none; /* Скрываем контактную информацию на десктопе */
+  }
+
+  /* Показываем слайдер на десктопе */
+  .contacts-slider,
+  .desktop-tablet-only {
+    display: block; /* Показываем слайдер на десктопе */
+  }
+
+  /* Центрируем слайдер на десктопе */
+  .contacts-body {
+    justify-content: center; /* Центрируем только слайдер */
+  }
+
+  /* Настройки слайдера для десктопа */
+  .contacts-slider {
+    width: calc(100vw - 60px); /* Ширина экрана минус 30px с каждой стороны */
+    height: 400px; /* Фиксированная высота */
+  }
+
+  /* Отступы контейнера для десктопа */
+  .slider-container {
+    padding: 30px; /* Увеличенные отступы для десктопа */
+    gap: 15px; /* Увеличенное расстояние между панелями */
+  }
+
+  /* Увеличиваем размеры элементов в слайдере на десктопе */
+
+  .slider-panel h3 {
+    font-size: 26px; /* Увеличиваем размер заголовка */
+  }
+
+  .slider-panel p {
+    font-size: 18px; /* Увеличиваем размер описания */
+  }
+
+  /* Увеличиваем иконку на десктопе */
+  .telegram-icon {
+    width: 120px; /* Увеличенная втрое ширина иконки */
+    height: 114px; /* Увеличенная втрое высота иконки */
+  }
+}
+
+/* ================================================ */
+/* АДАПТИВНЫЕ СТИЛИ ДЛЯ ПЛАНШЕТОВ */
+/* ================================================ */
+
+/* Стили для планшетов */
+@media (max-width: 1024px) {
+  /* Уменьшаем отступы контента */
+  .contacts-content {
+    padding: 100px 30px 60px;
+  }
+
+  /* Уменьшаем размер заголовка */
+  .contacts-title {
+    font-size: 42px;
+  }
+
+  /* Уменьшаем размер подзаголовка */
+  .contacts-subtitle {
+    font-size: 18px;
+  }
+
+  /* Уменьшаем расстояние между колонками */
+  .contacts-body {
+    gap: 30px;
+  }
+
+  /* Адаптируем слайдер для планшетов */
+  .contacts-slider {
+    max-width: 400px;
+  }
+
+  .slider-container {
+    height: 250px;
+  }
+
+  .slider-panel h3 {
+    font-size: 20px; /* Увеличенный размер для планшетов */
+  }
+
+  .slider-panel p {
+    font-size: 16px; /* Увеличенный размер описания */
+  }
+
+  /* Размеры иконок для планшетов */
+  .telegram-icon {
+    width: 108px; /* Увеличенная втрое иконка для планшетов */
+    height: 102px; /* Увеличенная втрое иконка для планшетов */
+  }
+
+  /* Стили для планшетов */
+
+  /* Показываем слайдер на планшетах */
+  .contacts-slider,
+  .desktop-tablet-only {
+    display: block; /* Показываем слайдер на планшетах */
+  }
+
+  /* Показываем контактную информацию на планшетах */
+  .contact-info.mobile-only {
+    display: flex; /* Показываем контактную информацию на планшетах */
+  }
+
+  /* Настройки слайдера для планшетов */
+  .contacts-slider {
+    width: calc(100vw - 60px); /* Ширина экрана минус 30px с каждой стороны */
+    height: 300px; /* Уменьшенная высота для планшетов */
+  }
+
+  /* Отступы контейнера для планшетов */
+  .slider-container {
+    padding: 20px; /* Стандартные отступы для планшетов */
+    gap: 10px; /* Стандартное расстояние между панелями */
+  }
+
+  /* Уменьшаем отступы формы */
+  .contact-form {
+    padding: 30px;
+  }
+}
+
+/* ================================================ */
+/* АДАПТИВНЫЕ СТИЛИ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ */
+/* ================================================ */
+
+/* Стили для мобильных устройств */
+@media (max-width: 768px) {
+  /* Адаптивные стили для контента */
+  .contacts-body {
+    flex-direction: column; /* Вертикальное расположение */
+    gap: 30px; /* Расстояние между элементами */
+  }
+
+  /* Уменьшаем отступы контента */
+  .contacts-content {
+    padding: 80px 20px 60px;
+  }
+
+  /* Уменьшаем размер заголовка */
+  .contacts-title {
+    font-size: 36px;
+    letter-spacing: 1px;
+  }
+
+  /* Уменьшаем размер подзаголовка */
+  .contacts-subtitle {
+    font-size: 16px;
+  }
+
+  /* Скрываем слайдер на мобильных устройствах */
+  .contacts-slider,
+  .desktop-tablet-only {
+    display: none; /* Скрываем слайдер на мобильных */
+  }
+
+  /* Показываем контактную информацию на мобильных */
+  .contact-info.mobile-only {
+    display: flex; /* Показываем контактную информацию на мобильных */
+  }
+
+  /* Уменьшаем отступы контактной информации */
+  .contact-info {
+    gap: 20px;
+  }
+
+  /* Уменьшаем отступы элементов контакта */
+  .contact-item {
+    padding: 20px;
+    gap: 15px;
+  }
+
+  /* Уменьшаем размер иконки */
+  .contact-icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  /* Уменьшаем размеры текста */
+  .contact-label {
+    font-size: 16px;
+  }
+
+  .contact-value {
+    font-size: 14px;
+  }
+}
+
+/* Стили для футера в мобильном меню */
+.mobile-menu-footer {
+  position: absolute; /* Абсолютное позиционирование */
+  bottom: 70px; /* Отступ снизу 70px */
+  left: 50%; /* Центрируем по горизонтали */
+  transform: translateX(-50%) translateY(20px); /* Точное центрирование с начальным смещением */
+  width: 100%; /* Полная ширина */
+  max-width: 300px; /* Максимальная ширина */
+  padding: 12px 20px; /* Внутренние отступы */
+  opacity: 0; /* Начальная прозрачность */
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); /* Плавные переходы */
+  cursor: pointer; /* Курсор-указатель для кликабельности */
+  display: flex; /* Flexbox для выравнивания элементов */
+  justify-content: center; /* Центрируем элементы */
+  align-items: center; /* Выравниваем по центру по вертикали */
+  gap: 12px; /* Расстояние между текстом и иконкой */
+  background: rgba(255, 255, 255, 0.1); /* Полупрозрачный белый фон */
+  border-radius: 25px; /* Скругленные углы */
+  backdrop-filter: blur(10px); /* Размытие фона */
+  -webkit-backdrop-filter: blur(10px); /* Поддержка в Safari */
+  border: 1px solid rgba(255, 255, 255, 0.2); /* Тонкая светлая граница */
+  text-decoration: none; /* Убираем подчеркивание */
+}
+
+/* Анимация появления футера в мобильном меню */
+.mobile-menu.active .mobile-menu-footer {
+  opacity: 1; /* Полная видимость */
+  transform: translateX(-50%) translateY(0); /* Убираем смещение */
+  transition-delay: 0.4s; /* Задержка появления футера */
+}
+
+/* Эффект при наведении на футер в мобильном меню */
+.mobile-menu-footer:hover {
+  transform: translateX(-50%) translateY(-2px); /* Поднимаем футер при наведении */
+  background: rgba(255, 255, 255, 0.2); /* Более светлый фон при наведении */
+  border-color: rgba(255, 255, 255, 0.4); /* Более светлая граница */
+  box-shadow: 0 8px 25px rgba(255, 255, 255, 0.15); /* Тень при наведении */
+}
+
+/* Эффект при нажатии на футер в мобильном меню */
+.mobile-menu-footer:active {
+  transform: translateX(-50%) translateY(0) scale(0.98); /* Эффект нажатия */
+  transition: all 0.1s ease; /* Быстрая анимация нажатия */
+}
+
+/* Стили для текста в футере мобильного меню */
+.mobile-menu-footer p {
+  color: rgba(255, 255, 255, 0.9); /* Полупрозрачный белый цвет */
+  font-family: "LT Remark", "Helvetica", "Arial", sans-serif; /* Шрифт LT Remark */
+  font-size: 14px; /* Размер шрифта */
+  font-weight: 400; /* Обычная жирность */
+  letter-spacing: 0.3px; /* Расстояние между буквами */
+  margin: 0; /* Убираем внешние отступы */
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3); /* Тень текста */
+}
+
+/* Стили для иконки Telegram в футере мобильного меню */
+.mobile-menu-footer .telegram-icon {
+  width: 18px; /* Размер иконки Telegram */
+  height: 16px; /* Размер иконки Telegram */
+  filter: brightness(0.8); /* Немного затемняем иконку */
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); /* Плавные переходы с улучшенной кривой */
+}
+
+/* Эффект при наведении на иконку Telegram в футере мобильного меню */
+.mobile-menu-footer:hover .telegram-icon {
+  filter: brightness(1); /* Полная яркость при наведении */
+  transform: scale(1.1); /* Увеличиваем размер при наведении */
+}
+
+/* Стили для маленьких мобильных устройств */
+@media (max-width: 480px) {
+  /* Размеры слайдера для мобильных как в slider папке */
+  .contacts-slider {
+    width: 100vw; /* Полная ширина экрана */
+    height: 40vh; /* Уменьшенная высота для мобильных */
+  }
+
+  /* Панели для мобильных */
+  .slider-panel {
+    flex: 1; /* Одинаковая ширина */
+    margin: 5px; /* Уменьшенные отступы */
+    height: 40vh; /* Высота как в slider папке */
+  }
+
+  /* Активная панель для мобильных */
+  .slider-panel.active {
+    flex: 3; /* Ширина активной панели */
+  }
+
+  /* Еще больше уменьшаем отступы */
+  .contacts-content {
+    padding: 70px 15px 50px;
+  }
+
+  /* Уменьшаем размер заголовка */
+  .contacts-title {
+    font-size: 28px;
+  }
+
+  /* Уменьшаем размер подзаголовка */
+  .contacts-subtitle {
+    font-size: 14px;
+  }
+
+  .slider-panel h3 {
+    font-size: 14px;
+    bottom: 10px;
+    left: 10px;
+    text-shadow: none; /* Убираем тень текста */
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); /* Более быстрая анимация для мобильных */
+    animation: none; /* Отключаем сложные анимации на мобильных для производительности */
+  }
+
+  .slider-panel.active h3 {
+    font-size: 18px; /* Адаптированный размер для активной панели на мобильных */
+    animation: none; /* Отключаем сложные анимации на мобильных для производительности */
+  }
+
+  /* Адаптация повернутых меток для мобильных */
+  .rotated-label {
+    font-size: 12px; /* Уменьшенный размер для мобильных */
+    letter-spacing: 0.5px; /* Уменьшенное расстояние между буквами */
+  }
+
+  /* Уменьшаем отступы контактной информации */
+  .contact-info {
+    gap: 15px;
+  }
+
+  /* Уменьшаем отступы элементов контакта */
+  .contact-item {
+    padding: 15px;
+    gap: 12px;
+  }
+
+  /* Уменьшаем размер иконки */
+  .contact-icon {
+    width: 35px;
+    height: 35px;
+  }
+
+  /* Уменьшаем размеры текста */
+  .contact-label {
+    font-size: 14px;
+  }
+
+  .contact-value {
+    font-size: 13px;
+  }
+}
+
+/* ================================================ */
+/* ДОПОЛНИТЕЛЬНЫЕ СТИЛИ */
+/* ================================================ */
+
+/* Стили для активной ссылки в навигации */
+.nav-link.active,
+.mobile-link.active {
+  color: rgba(255, 255, 255, 0.9) !important;
+  background: rgba(255, 255, 255, 0.1) !important;
+  border-radius: 8px !important;
+  padding: 8px 16px !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* Стили для анимации появления */
+.animate-in {
+  animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Стили для загруженной страницы */
+body.loaded .contacts-header {
+  animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.2s forwards;
+}
+
+body.loaded .contact-info {
+  animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.4s forwards;
+}
+
+/* Стили для очень маленьких экранов */
+@media (max-width: 360px) {
+  /* Минимальные отступы */
+  .contacts-content {
+    padding: 60px 10px 40px;
+  }
+
+  /* Минимальный размер заголовка */
+  .contacts-title {
+    font-size: 24px;
+  }
+
+  /* Минимальный размер подзаголовка */
+  .contacts-subtitle {
+    font-size: 13px;
+  }
+
+  /* Минимальные отступы контактной информации */
+  .contact-info {
+    gap: 12px;
+  }
+
+  /* Минимальные отступы элементов контакта */
+  .contact-item {
+    padding: 12px;
+    gap: 10px;
+  }
+
+  /* Минимальный размер иконки */
+  .contact-icon {
+    width: 30px;
+    height: 30px;
+  }
+
+  /* Минимальные размеры текста */
+  .contact-label {
+    font-size: 13px;
+  }
+
+  .contact-value {
+    font-size: 12px;
+  }
+
+  /* Минимальные отступы формы */
+  .contact-form {
+    padding: 15px;
+  }
+
+  /* Минимальный размер заголовка формы */
+  .form-title {
+    font-size: 18px;
+  }
+
+  /* Минимальные размеры полей */
+  .form-input,
+  .form-textarea {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+
+  /* Минимальный размер кнопки */
+  .form-submit {
+    padding: 10px 20px;
+    font-size: 13px;
+  }
+}
+
+/* ================================================ */
+/* СТИЛИ ФУТЕРА */
+/* ================================================ */
+
+/* Основной контейнер футера */
+.footer {
+  position: absolute; /* Абсолютное позиционирование */
+  bottom: 0; /* Прилипаем к низу */
+  left: 0; /* Прилипаем к левому краю */
+  width: 100%; /* Полная ширина */
+  background-color: rgba(0, 0, 0, 0.2); /* Полупрозрачный фон */
+  backdrop-filter: blur(10px); /* Размытие фона */
+  -webkit-backdrop-filter: blur(10px); /* Поддержка в Safari */
+  border-top: 1px solid rgba(255, 255, 255, 0.1); /* Тонкая светлая граница сверху */
+  z-index: 1000; /* Высокий z-index для отображения поверх контента */
+  padding: 8px 0; /* Внутренние отступы */
+}
+@media (min-width: 771px) {
+  .footer {
+    /* Скрываем футер вне экрана на десктопе */
+    position: absolute !important; /* Принудительно абсолютное позиционирование */
+    bottom: -49px !important; /* Убираем футер полностью вне экрана */
+    left: 0 !important; /* Прилипаем к левому краю */
+    width: 100vw !important; /* Полная ширина */
+    z-index: 1000 !important; /* Высокий z-index для отображения поверх фотографий */
+    margin: 0 !important; /* Убираем все внешние отступы */
+    padding: 8px 0 !important; /* Внутренние отступы */
+  }
+}
+/* Контент футера */
+.footer-content {
+  display: flex; /* Flexbox для выравнивания элементов */
+  justify-content: center; /* Центрируем элементы */
+  align-items: center; /* Выравниваем по центру по вертикали */
+  max-width: 1200px; /* Максимальная ширина */
+  margin: 0 auto; /* Центрируем */
+  padding: 0 40px; /* Внутренние отступы */
+  gap: 10px; /* Расстояние между текстом и иконкой */
+  cursor: pointer; /* Курсор-указатель для кликабельности */
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* Плавные переходы */
+  text-decoration: none; /* Убираем подчеркивание ссылки */
+  color: inherit; /* Наследуем цвет от родителя */
+}
+
+/* Эффект при наведении на footer-content */
+.footer-content:hover {
+  transform: translateY(-2px); /* Поднимаем при наведении */
+}
+
+/* Эффект при нажатии на footer-content */
+.footer-content:active {
+  transform: translateY(0) scale(0.98); /* Эффект нажатия */
+  transition: all 0.1s ease; /* Быстрая анимация нажатия */
+}
+
+/* Стили для текста в footer */
+.footer-text p {
+  color: rgba(255, 255, 255, 0.8); /* Полупрозрачный белый цвет */
+  font-family: "LT Remark", "Helvetica", "Arial", sans-serif; /* Шрифт LT Remark */
+  font-size: 15px; /* Размер шрифта */
+  font-weight: 400; /* Обычная жирность */
+  letter-spacing: 0.3px; /* Расстояние между буквами */
+  margin: 0; /* Убираем внешние отступы */
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3); /* Тень текста */
+}
+
+/* Стили для иконки */
+.footer-icon {
+  display: flex; /* Flexbox для центрирования */
+  align-items: center; /* Выравниваем по центру */
+  justify-content: center; /* Центрируем по горизонтали */
+  width: 32px; /* Ширина области иконки */
+  height: 32px; /* Высота области иконки */
+  border-radius: 50%; /* Круглая область */
+  background-color: rgba(255, 255, 255, 0.1); /* Полупрозрачный фон */
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* Плавные переходы */
+}
+
+/* Эффект при наведении на иконку */
+.footer-content:hover .footer-icon {
+  background-color: rgba(
+    255,
+    255,
+    255,
+    0.2
+  ); /* Более светлый фон при наведении */
+  transform: scale(1.1); /* Увеличиваем размер при наведении */
+}
+
+/* Стили для иконки Telegram */
+.telegram-icon {
+  width: 19px; /* Ширина иконки */
+  height: 17px; /* Высота иконки */
+  filter: brightness(0.9); /* Немного затемняем иконку */
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* Плавные переходы */
+}
+
+/* Эффект при наведении на иконку Telegram */
+.footer-content:hover .telegram-icon {
+  filter: brightness(1.2); /* Увеличиваем яркость при наведении */
+  transform: scale(1.1); /* Увеличиваем размер при наведении */
+}
+
+/* ================================================ */
+/* АДАПТИВНЫЕ СТИЛИ ФУТЕРА */
+/* ================================================ */
+
+/* Адаптивные стили для планшетов */
+@media (max-width: 768px) {
+  .footer {
+    padding: 5px 0; /* Минимальные отступы */
+  }
+
+  .footer-content {
+    padding: 0 15px; /* Уменьшенные отступы */
+    gap: 6px; /* Минимальное расстояние между элементами */
+  }
+
+  .footer-text p {
+    font-size: 12px; /* Уменьшенный размер шрифта */
+  }
+
+  .footer-icon {
+    width: 18px; /* Минимальная ширина области иконки */
+    height: 18px; /* Минимальная высота области иконки */
+  }
+}
+
+/* Адаптивные стили для мобильных устройств */
+@media (max-width: 480px) {
+  .footer {
+    padding: 4px 0; /* Минимальные отступы */
+  }
+
+  .footer-content {
+    padding: 0 12px; /* Минимальные отступы */
+    gap: 5px; /* Минимальное расстояние между элементами */
+  }
+
+  .footer-text p {
+    font-size: 11px; /* Минимальный размер шрифта */
+  }
+
+  .footer-icon {
+    width: 16px; /* Минимальная ширина области иконки */
+    height: 16px; /* Минимальная высота области иконки */
+  }
+}
