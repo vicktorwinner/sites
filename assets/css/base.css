@@ -385,17 +385,19 @@ body {
   flex-direction: column; /* Вертикальное расположение */
   justify-content: center; /* Центрирование по вертикали */
   align-items: center; /* Центрирование по горизонтали */
-  gap: 40px; /* Расстояние между ссылками */
+  gap: 20px; /* Уменьшенное расстояние между ссылками для лучшего вида */
   transform: translateX(-100%); /* Скрываем меню за левым краем */
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); /* Улучшенная анимация появления */
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); /* Улучшенная анимация появления */
   z-index: 1000; /* Высокий z-index */
   opacity: 0; /* Начальная прозрачность */
+  visibility: hidden; /* Скрываем меню для лучшей производительности */
 }
 
 /* Класс для показа мобильного меню */
 .mobile-menu.active {
   transform: translateX(0); /* Возвращаем меню в видимую область */
   opacity: 1; /* Полная видимость */
+  visibility: visible; /* Показываем меню */
 }
 
 /* Стили для ссылок в мобильном меню */
@@ -411,7 +413,7 @@ body {
   position: relative; /* Относительное позиционирование */
   opacity: 0; /* Начальная прозрачность */
   transform: translateY(20px); /* Начальное смещение вниз */
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* Плавные переходы */
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); /* Плавные переходы с увеличенной длительностью */
   background: rgba(
     255,
     255,
@@ -423,6 +425,8 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.2); /* Тонкая светлая граница */
   text-align: center; /* Центрируем текст */
   min-width: 200px; /* Минимальная ширина для единообразия */
+  display: block; /* Блочный элемент для лучшего контроля */
+  margin: 8px 0; /* Отступы между ссылками */
 }
 
 /* Анимация появления ссылок в мобильном меню */
@@ -442,6 +446,10 @@ body {
 
 .mobile-menu.active .mobile-link:nth-child(3) {
   transition-delay: 0.3s; /* Задержка для третьей ссылки */
+}
+
+.mobile-menu.active .mobile-link:nth-child(4) {
+  transition-delay: 0.4s; /* Задержка для четвертой ссылки */
 }
 
 /* Эффект при наведении на ссылки */
